@@ -1,4 +1,4 @@
-import type { ASTNode } from "./parser";
+import type { ASTNode } from "./parser.js";
 
 export function generateCode(node: ASTNode): string {
   if (node.type === "Text") {

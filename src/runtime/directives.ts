@@ -1,12 +1,12 @@
-import { effect } from "../reactive/effect";
+import { effect } from "../reactive/effect.js";
 import {
   createInstance,
   currentInstance,
   popInstance,
   pushInstance,
   type ComponentInstance,
-} from "./instance";
-import { unmountInstance, onMount } from "./lifecycle";
+} from "./instance.js";
+import { unmountInstance, onMount } from "./lifecycle.js";
 
 export function If({
   when,

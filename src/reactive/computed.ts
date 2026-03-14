@@ -1,4 +1,4 @@
-import { activeEffect, run, type Effect } from "./effect";
+import { activeEffect, run, type Effect } from "./effect.js";
 
 /**
  * Computed en si mismo se comporta igual que el effect para que se inyecte como dependencia.

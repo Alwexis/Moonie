@@ -1,7 +1,7 @@
-import { h } from "../runtime/h";
-import { If, For } from "../runtime/directives";
-import { parse, type ASTNode } from "./parser";
-import { tokenize } from "./tokenizer";
+import { h } from "../runtime/h.js";
+import { If, For } from "../runtime/directives.js";
+import { parse, type ASTNode } from "./parser.js";
+import { tokenize } from "./tokenizer.js";
 
 export function generate(
   node: ASTNode,

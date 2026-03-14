@@ -1,10 +1,10 @@
-import { effect } from "../reactive/effect";
+import { effect } from "../reactive/effect.js";
 import {
   createInstance,
   currentInstance,
   popInstance,
   pushInstance,
-} from "./instance";
+} from "./instance.js";
 
 type Child = string | Node | (() => string | Node) | Child[];
 

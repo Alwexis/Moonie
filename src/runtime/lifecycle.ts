@@ -4,7 +4,7 @@ import {
   popInstance,
   pushInstance,
   type ComponentInstance,
-} from "./instance";
+} from "./instance.js";
 
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
