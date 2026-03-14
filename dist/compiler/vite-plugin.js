@@ -23,8 +23,7 @@ export function mooniePlugin() {
             const ast = parse(tokens);
             const templateCode = generateCodeNodes(ast);
             const output = `
-    import { h } from '@moonie/runtime/h.ts';
-    import { If, For } from '@moonie/runtime/directives.ts';
+    import { h, If, For } from 'moonie';
     ${imports}
     
     export default function Component(props = {}) {
