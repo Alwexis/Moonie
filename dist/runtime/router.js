@@ -3,19 +3,24 @@ import { value } from "../reactive/value.js";
 import { h } from "./h.js";
 import { createInstance, popInstance, pushInstance, } from "./instance.js";
 import { onMount, unmountInstance } from "./lifecycle.js";
+const isBrowser = typeof window !== "undefined";
 // aca guardamos como valor reactivo el current path para visar cuando cambia
-export const currentPath = value(window.location.pathname);
+export const currentPath = value(typeof window !== "undefined" ? window.location.pathname : "/");
 // parámetros
 export const currentParams = value({});
 // funcion para navegar en la spa
 export function navigate(to) {
     currentPath.set(to);
-    window.history.pushState(null, "", to);
+    if (typeof window !== "undefined") {
+        window.history.pushState(null, "", to);
+    }
 }
 // eventlistener para saber cuando cambian de pagian con las flechitas
-window.addEventListener("popstate", () => {
-    currentPath.set(window.location.pathname);
-});
+if (typeof window !== "undefined") {
+    window.addEventListener("popstate", () => {
+        currentPath.set(window.location.pathname);
+    });
+}
 export function RouterView({ routes, fallback, }) {
     const anchor = document.createComment("moonie-router-anchor");
     let currentElement;

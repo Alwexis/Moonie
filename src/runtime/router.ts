@@ -9,8 +9,12 @@ import {
 } from "./instance.js";
 import { onMount, unmountInstance } from "./lifecycle.js";
 
+const isBrowser = typeof window !== "undefined";
+
 // aca guardamos como valor reactivo el current path para visar cuando cambia
-export const currentPath = value(window.location.pathname);
+export const currentPath = value(
+  typeof window !== "undefined" ? window.location.pathname : "/",
+);
 
 // parámetros
 export const currentParams = value<Record<string, string>>({});
@@ -18,13 +22,17 @@ export const currentParams = value<Record<string, string>>({});
 // funcion para navegar en la spa
 export function navigate(to: string) {
   currentPath.set(to);
-  window.history.pushState(null, "", to);
+  if (typeof window !== "undefined") {
+    window.history.pushState(null, "", to);
+  }
 }
 
 // eventlistener para saber cuando cambian de pagian con las flechitas
-window.addEventListener("popstate", () => {
-  currentPath.set(window.location.pathname);
-});
+if (typeof window !== "undefined") {
+  window.addEventListener("popstate", () => {
+    currentPath.set(window.location.pathname);
+  });
+}
 
 export interface Route {
   path: string;
