@@ -1,0 +1,32 @@
+{
+  "name": "moonie",
+  "version": "1.0.0",
+  "description": "POC de microframework web en TypeScript",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "reactive",
+    "web",
+    "framework",
+    "typescript"
+  ],
+  "author": "Ariel Silva",
+  "license": "ISC",
+  "packageManager": "pnpm@10.17.0",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
