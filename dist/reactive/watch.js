@@ -1,4 +1,4 @@
-import { run } from "./effect";
+import { run } from "./effect.js";
 export function watch(source, callback) {
     let _value;
     const self = {

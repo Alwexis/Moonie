@@ -1,4 +1,4 @@
-import { activeEffect, run } from "./effect";
+import { activeEffect, run } from "./effect.js";
 /**
  * Computed en si mismo se comporta igual que el effect para que se inyecte como dependencia.
  * pero nuestro "fn" acá no llama al callback que usamos como parámeetro, sino que cambia la flag a true para que se recalcule

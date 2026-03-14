@@ -1,4 +1,4 @@
-import type { Token } from "./tokenizer";
+import type { Token } from "./tokenizer.js";
 export interface ASTNode {
     type: "Element" | "Text" | "Directive" | "Interpolation";
     tag?: string;

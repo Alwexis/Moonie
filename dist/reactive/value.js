@@ -1,4 +1,4 @@
-import { activeEffect } from "./effect";
+import { activeEffect } from "./effect.js";
 // Es importante dejarlo genérico para no depender de any y tmb sea type safe
 export function value(initialValue) {
     let _value = initialValue;

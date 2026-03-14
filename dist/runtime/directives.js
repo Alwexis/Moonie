@@ -1,6 +1,6 @@
-import { effect } from "../reactive/effect";
-import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance";
-import { unmountInstance, onMount } from "./lifecycle";
+import { effect } from "../reactive/effect.js";
+import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
+import { unmountInstance, onMount } from "./lifecycle.js";
 export function If({ when, then, otherwise, }) {
     const anchor = document.createComment("moonie-if-anchor");
     let currentElement;

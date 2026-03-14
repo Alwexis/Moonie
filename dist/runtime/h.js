@@ -1,5 +1,5 @@
-import { effect } from "../reactive/effect";
-import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance";
+import { effect } from "../reactive/effect.js";
+import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
 export function h(tag, props, children) {
     if (typeof tag === "function") {
         const instance = createInstance();
