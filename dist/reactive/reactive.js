@@ -1,4 +1,4 @@
-import { activeEffect } from "./effect";
+import { activeEffect } from "./effect.js";
 const reactiveTree = new WeakMap();
 export function reactive(obj) {
     // el proxy es un Objeto que nos permite hacerle una especie de override a los getter y setters de los objetos normales

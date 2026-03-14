@@ -1,7 +1,7 @@
-import { h } from "../runtime/h";
-import { If, For } from "../runtime/directives";
-import { parse } from "./parser";
-import { tokenize } from "./tokenizer";
+import { h } from "../runtime/h.js";
+import { If, For } from "../runtime/directives.js";
+import { parse } from "./parser.js";
+import { tokenize } from "./tokenizer.js";
 export function generate(node, context = {}) {
     if (node.type === "Text") {
         return node.value;

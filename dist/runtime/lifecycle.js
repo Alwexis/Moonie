@@ -1,4 +1,4 @@
-import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance";
+import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */

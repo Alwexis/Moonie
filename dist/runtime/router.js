@@ -1,8 +1,8 @@
-import { effect } from "../reactive/effect";
-import { value } from "../reactive/value";
-import { h } from "./h";
-import { createInstance, popInstance, pushInstance, } from "./instance";
-import { onMount, unmountInstance } from "./lifecycle";
+import { effect } from "../reactive/effect.js";
+import { value } from "../reactive/value.js";
+import { h } from "./h.js";
+import { createInstance, popInstance, pushInstance, } from "./instance.js";
+import { onMount, unmountInstance } from "./lifecycle.js";
 // aca guardamos como valor reactivo el current path para visar cuando cambia
 export const currentPath = value(window.location.pathname);
 // parámetros

@@ -1,4 +1,4 @@
-import { type ComponentInstance } from "./instance";
+import { type ComponentInstance } from "./instance.js";
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */

@@ -1,7 +1,7 @@
-import { parseMnFile } from "./mn-parser";
-import { tokenize } from "./tokenizer";
-import { parse } from "./parser";
-import { generateCodeNodes } from "./codegen";
+import { parseMnFile } from "./mn-parser.js";
+import { tokenize } from "./tokenizer.js";
+import { parse } from "./parser.js";
+import { generateCodeNodes } from "./codegen.js";
 function extractImports(script) {
     const lines = script.split("\n");
     const importLines = lines.filter((l) => l.trim().startsWith("import"));
