@@ -1,4 +1,4 @@
-import { type Effect, activeEffect } from "./effect";
+import { type Effect, activeEffect } from "./effect.js";
 
 // Es importante dejarlo genérico para no depender de any y tmb sea type safe
 export function value<T>(initialValue: T) {

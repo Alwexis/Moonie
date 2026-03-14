@@ -1,4 +1,4 @@
-import { activeEffect, type Effect } from "./effect";
+import { activeEffect, type Effect } from "./effect.js";
 
 // el reactive tree es el graph que guarda dependencias entre objetos propiedades y efectos. Es un WeakMap porque no queremos que los objetos reactivos sean retenidos en memoria si ya no se usan.
 type TReactiveTree = WeakMap<object, Map<PropertyKey, Set<Effect>>>;

@@ -1,4 +1,4 @@
-import { run, type Effect } from "./effect";
+import { run, type Effect } from "./effect.js";
 
 export function watch<T>(
   source: () => T,
