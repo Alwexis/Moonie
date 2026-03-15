@@ -50,3 +50,19 @@ export async function fetchPokemonListComplete(
   );
   return pokemon.filter((p) => p !== null);
 }
+
+export async function fetchEvolutionChain(url: string) {
+  try {
+    const res = await fetch(url);
+    return res.json();
+  } catch (error) {
+    console.error(`Failed to fetch evolution chain:`, error);
+    return null;
+  }
+}
+
+export async function fetchEvolutionChainById(id: number) {
+  return fetchEvolutionChain(
+    `https://pokeapi.co/api/v2/evolution-chain/${id}/`,
+  );
+}

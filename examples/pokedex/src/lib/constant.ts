@@ -18,3 +18,39 @@ export const POKEMON_TYPE_STYLES: Record<string, string> = {
   steel: "bg-type-steel text-slate-800 border-slate-400",
   fairy: "bg-type-fairy text-rose-900 border-rose-300",
 } as const;
+
+const DELAY_CLASSES = [
+  "animate-delay-0",
+  "animate-delay-100",
+  "animate-delay-200",
+  "animate-delay-300",
+  "animate-delay-400",
+  "animate-delay-500",
+];
+
+export type DelayClass = (typeof DELAY_CLASSES)[number];
+
+export const calculateDelay = (id: number): DelayClass => {
+  const safeId = Math.max(1, id);
+
+  const index = (safeId - 1) % DELAY_CLASSES.length;
+
+  return DELAY_CLASSES[index];
+};
+
+// stats
+export const getStatClasses = (statName: string, value: number): string => {
+  const MAP: Record<string, string> = {
+    hp: "bg-red-500",
+    attack: "bg-orange-500",
+    defense: "bg-yellow-500",
+    "special-attack": "bg-blue-500",
+    "special-defense": "bg-green-500",
+    speed: "bg-pink-500",
+  };
+
+  const percentage = Math.round((value / 255) * 100);
+  const color = MAP[statName] ?? "bg-gray-500";
+
+  return `w-[${percentage}%] ${color}`;
+};

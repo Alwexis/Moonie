@@ -9,20 +9,19 @@
   const loading = value(true);
 
   onMount(async () => {
-    loading.value = true;
+    loading.set(true);
     const data = await fetchPokemonListComplete();
-    console.log(data);
     pokemonList.push(...data);
-    loading.value = false;
+    loading.set(false);
   });
 
   async function loadMore() {
-    if (loading.value) return;
+    if (loading.get()) return;
     actualOffset += 20;
-    loading.value = true;
+    loading.set(true);
     const data = await fetchPokemonListComplete(actualOffset);
     pokemonList.push(...data);
-    loading.value = false;
+    loading.set(false);
   }
 </script>
 
