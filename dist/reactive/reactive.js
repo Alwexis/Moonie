@@ -3,8 +3,27 @@ const reactiveTree = new WeakMap();
 export function reactive(obj) {
     // el proxy es un Objeto que nos permite hacerle una especie de override a los getter y setters de los objetos normales
     // y podemos modificar su comportamiento, como abajo.
-    return new Proxy(obj, {
+    const proxy = new Proxy(obj, {
         get(target, key) {
+            // metodo interno para reemplazar el objeto completo de una sola vez.
+            // borra todas las keys actuales, asigna las nuevas y dispara todos los efectos.
+            if (key === "set") {
+                return (newValue) => {
+                    // borra keys actuales del objeto raw
+                    Object.keys(target).forEach((k) => {
+                        delete target[k];
+                    });
+                    // asigna los nuevos valores y dispara todos los efectos registrados
+                    Object.assign(target, newValue);
+                    const depsMap = reactiveTree.get(target);
+                    if (depsMap) {
+                        depsMap.forEach((deps) => {
+                            const copy = new Set(deps);
+                            copy.forEach((dep) => dep.fn());
+                        });
+                    }
+                };
+            }
             /**
              * lo que se hace acá es primero revisar si existe la dependencia en el reactive tree. Si no existe, se crea.
              * Lo mismo con la dependencia del efecto.
@@ -55,4 +74,5 @@ export function reactive(obj) {
             return true;
         },
     });
+    return proxy;
 }
