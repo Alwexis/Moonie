@@ -5,7 +5,15 @@ import { RouterView } from "./router.js";
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */
 export function onMount(fn) {
-    currentInstance?.mountedHooks.push(fn);
+    if (!currentInstance)
+        return;
+    const instance = currentInstance;
+    instance.mountedHooks.push(async () => {
+        const cleanup = await fn();
+        if (typeof cleanup === "function") {
+            instance.unmountedHooks.push(cleanup);
+        }
+    });
 }
 /**
  * se ejecuta cuando un componente se desmonta, se almacenan los efectos en el currentInstance para ejecutarse luego.

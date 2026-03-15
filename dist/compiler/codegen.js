@@ -42,6 +42,9 @@ function generateProps(props, isComponent = false) {
     const propsStr = entries
         .map(([key, value]) => {
         const safeKey = /[^a-zA-Z0-9_$]/.test(key) ? `"${key}"` : key;
+        if (key === "ref") {
+            return `ref: ${value.expression}`;
+        }
         if (value.reactive) {
             return isComponent
                 ? `${safeKey}: ${value.expression}`

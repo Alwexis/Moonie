@@ -28,15 +28,24 @@ export function h(tag, props, children) {
         }
         return node;
     }
+    // extraemos el ref antes de aplicar props para no pasarlo al DOM
+    const refObject = props?.ref ?? null;
+    const cleanProps = props
+        ? Object.fromEntries(Object.entries(props).filter(([key]) => key !== "ref"))
+        : {};
     const isSvg = SVG_TAGS.has(tag);
     const element = isSvg
-        ? document.createElementNS('http://www.w3.org/2000/svg', tag)
+        ? document.createElementNS("http://www.w3.org/2000/svg", tag)
         : document.createElement(tag);
-    if (props) {
-        applyProps(element, props, isSvg);
+    if (Object.keys(cleanProps).length > 0) {
+        applyProps(element, cleanProps, isSvg);
     }
     if (children) {
         mountChild(element, children);
+    }
+    // asignamos el elemento al ref dps de crearlo
+    if (refObject) {
+        refObject.el = element;
     }
     return element;
 }
@@ -72,10 +81,14 @@ function applyProp(element, prop, value, isSvg = false) {
     else {
         if (typeof value === "function") {
             if (!isSvg && prop in element) {
-                effect(() => { element[prop] = value(); });
+                effect(() => {
+                    element[prop] = value();
+                });
             }
             else {
-                effect(() => { element.setAttribute(prop, value()); });
+                effect(() => {
+                    element.setAttribute(prop, value());
+                });
             }
         }
         else {

@@ -8,3 +8,4 @@ export * from "./runtime/h.js";
 export * from "./runtime/instance.js";
 export * from "./runtime/lifecycle.js";
 export * from "./runtime/router.js";
+export * from "./runtime/ref.js";

@@ -3,7 +3,7 @@ import { Route } from "./router.js";
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */
-export declare function onMount(fn: Function): void;
+export declare function onMount(fn: () => (() => void) | void | Promise<void>): void;
 /**
  * se ejecuta cuando un componente se desmonta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */
