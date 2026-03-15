@@ -1,0 +1,43 @@
+<script>
+  import { value, reactive, onMount, useParams } from "moonie";
+  import { fetchPokemonById, fetchSpecies } from "../services/pokemon";
+
+  const params = useParams();
+
+  const loading = value(true);
+  const pokemon = value(null);
+
+  onMount(async () => {
+    loading.value = true;
+    const data = await fetchPokemonById(params.id);
+    const speciesData = await fetchSpecies(data.species.url);
+    data.species = speciesData;
+    pokemon.set(data);
+    loading.value = false;
+  });
+</script>
+
+<template>
+  <main class="h-dvh bg-red-500 px-8 py-16">
+    <div
+      class="w-full h-full grid grid-rows-[auto_1fr] items-center justify-center justify-items-center overflow-hidden">
+      <section
+        class="relative z-10 w-full max-w-md text-center bg-white px-6 py-4 rounded-t-lg border-t-2 border-x-2 border-red-800 -mb-0.75">
+        <h1 class="text-4xl font-medium">Pokédex</h1>
+        <p class="mt-2 text-sm">🐈‍⬛ Desarrollada con Moonie Framework 🌙</p>
+      </section>
+
+      <section
+        class="w-full min-w-5xl max-w-5xl h-full grid grid-cols-[auto_1fr] px-6 py-8 rounded-lg bg-white border-2 border-red-800 rounded-b-lg shadow-2xl overflow-auto">
+        @if (loading.value) {
+          <p class="text-center text-gray-500 mt-4">Cargando...</p>
+        } @else {
+          <!--TODO: Terminar esto jej -->
+          <div
+            class="flex flex-col items-center justify-center max-w-xs min-w-xs h-full"></div>
+          <div class="w-full h-full"></div>
+        }
+      </section>
+    </div>
+  </main>
+</template>

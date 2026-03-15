@@ -1,0 +1,75 @@
+<script>
+  import { reactive, value, onMount, computed } from "moonie";
+  import { fetchPokemonListComplete } from "../services/pokemon";
+  import Card from "../components/Card.mn";
+
+  let actualOffset = 0;
+
+  const pokemonList = reactive([]);
+  const loading = value(true);
+
+  onMount(async () => {
+    loading.value = true;
+    const data = await fetchPokemonListComplete();
+    console.log(data);
+    pokemonList.push(...data);
+    loading.value = false;
+  });
+
+  async function loadMore() {
+    if (loading.value) return;
+    actualOffset += 20;
+    loading.value = true;
+    const data = await fetchPokemonListComplete(actualOffset);
+    pokemonList.push(...data);
+    loading.value = false;
+  }
+</script>
+
+<template>
+  <main class="h-dvh bg-red-500 px-8 py-16">
+    <div class="w-full h-full flex flex-col items-center overflow-hidden">
+      <section
+        class="relative z-10 w-full max-w-md text-center bg-white px-6 py-4 rounded-t-lg border-t-2 border-x-2 border-red-800 -mb-0.75">
+        <h1 class="text-4xl font-medium">Pokédex</h1>
+        <p class="mt-2 text-sm">🐈‍⬛ Desarrollada con Moonie Framework 🌙</p>
+      </section>
+
+      <section
+        class="w-full max-w-5xl flex-1 rounded-lg bg-white border-2 border-red-800 rounded-b-lg shadow-2xl overflow-auto">
+        @if (loading.value) {
+          <p class="text-center text-gray-500 mt-4">Cargando...</p>
+        } @else {
+          <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+            @for (pokemon of pokemonList; key: pokemon.id) {
+              <Card :pokemon="pokemon" />
+            }
+            <section
+              @click="loadMore()"
+              role="button"
+              tabindex="0"
+              class="rounded-md flex flex-col items-center justify-center bg-neutral-50 hover:bg-neutral-100 transition-all border border-neutral-200 cursor-pointer px-6 py-4">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-6">
+                <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                <path d="M21 3v5h-5" />
+                <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                <path d="M8 16H3v5" />
+              </svg>
+              <span class="text-lg font-bold">Cargar más</span>
+            </section>
+          </div>
+        }
+      </section>
+    </div>
+  </main>
+</template>
