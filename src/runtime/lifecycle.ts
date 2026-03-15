@@ -49,8 +49,6 @@ export function mount(selector: string, component?: () => HTMLElement) {
 
   return {
     router(routes: Route[]) {
-      const { h } = require("./h.js");
-      const { RouterView } = require("./router.js");
       function App() {
         return h(RouterView, { routes });
       }

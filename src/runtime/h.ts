@@ -42,28 +42,51 @@ export function h(
     return node;
   }
 
+  // extraemos el ref antes de aplicar props para no pasarlo al DOM
+  const refObject = props?.ref ?? null;
+  const cleanProps = props
+    ? Object.fromEntries(Object.entries(props).filter(([key]) => key !== "ref"))
+    : {};
+
   const isSvg = SVG_TAGS.has(tag);
   const element = isSvg
-  ? document.createElementNS('http://www.w3.org/2000/svg', tag) as unknown as HTMLElement
-  : document.createElement(tag);
+    ? (document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        tag,
+      ) as unknown as HTMLElement)
+    : document.createElement(tag);
 
-  if (props) {
-    applyProps(element, props, isSvg);
+  if (Object.keys(cleanProps).length > 0) {
+    applyProps(element, cleanProps, isSvg);
   }
   if (children) {
     mountChild(element, children);
   }
 
+  // asignamos el elemento al ref dps de crearlo
+  if (refObject) {
+    refObject.el = element;
+  }
+
   return element;
 }
 
-function applyProps(element: HTMLElement, props: Record<string, any>, isSvg = false) {
+function applyProps(
+  element: HTMLElement,
+  props: Record<string, any>,
+  isSvg = false,
+) {
   for (const [prop, value] of Object.entries(props)) {
     applyProp(element, prop, value, isSvg);
   }
 }
 
-function applyProp(element: HTMLElement, prop: string, value: any, isSvg = false) {
+function applyProp(
+  element: HTMLElement,
+  prop: string,
+  value: any,
+  isSvg = false,
+) {
   if (prop.startsWith("on")) {
     const eventName = prop.slice(2).toLowerCase();
     element.addEventListener(eventName, value);
@@ -85,9 +108,13 @@ function applyProp(element: HTMLElement, prop: string, value: any, isSvg = false
   } else {
     if (typeof value === "function") {
       if (!isSvg && prop in element) {
-        effect(() => { (element as any)[prop] = value(); });
+        effect(() => {
+          (element as any)[prop] = value();
+        });
       } else {
-        effect(() => { element.setAttribute(prop, value()); });
+        effect(() => {
+          element.setAttribute(prop, value());
+        });
       }
     } else {
       if (!isSvg && prop in element) {
