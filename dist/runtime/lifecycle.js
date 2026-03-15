@@ -1,4 +1,6 @@
+import { h } from "./h.js";
 import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
+import { RouterView } from "./router.js";
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */
@@ -16,15 +18,29 @@ export function onUnmount(fn) {
  */
 export function mount(selector, component) {
     const root = document.querySelector(selector);
-    const instance = createInstance();
-    pushInstance(instance);
-    const node = component();
-    popInstance();
-    root?.appendChild(node);
-    instance.mountedHooks.forEach((fn) => fn());
-    return () => {
-        node.remove();
-        unmountInstance(instance);
+    if (!root)
+        throw new Error(`No se encontró el elemento con selector "${selector}"`);
+    if (component) {
+        const instance = createInstance();
+        pushInstance(instance);
+        const node = component();
+        popInstance();
+        root.appendChild(node);
+        instance.mountedHooks.forEach((fn) => fn());
+        return;
+    }
+    return {
+        router(routes) {
+            function App() {
+                return h(RouterView, { routes });
+            }
+            const instance = createInstance();
+            pushInstance(instance);
+            const node = App();
+            popInstance();
+            root.appendChild(node);
+            instance.mountedHooks.forEach((fn) => fn());
+        },
     };
 }
 /**

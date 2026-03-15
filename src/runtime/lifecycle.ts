@@ -1,3 +1,4 @@
+import { h } from "./h.js";
 import {
   createInstance,
   currentInstance,
@@ -5,6 +6,7 @@ import {
   pushInstance,
   type ComponentInstance,
 } from "./instance.js";
+import { Route, RouterView } from "./router.js";
 
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
@@ -23,18 +25,33 @@ export function onUnmount(fn: Function) {
 /**
  * Monta el componente inicial en el DOM y ejecuta los hooks de montaje. Devuelve funcion para desmontar componente y ejecutar unmounts
  */
-export function mount(selector: string, component: () => HTMLElement) {
+export function mount(selector: string, component?: () => HTMLElement) {
   const root = document.querySelector(selector);
-  const instance = createInstance();
-  pushInstance(instance);
-  const node = component();
-  popInstance();
-  root?.appendChild(node);
-  instance.mountedHooks.forEach((fn) => fn());
+  if (!root)
+    throw new Error(`No se encontró el elemento con selector "${selector}"`);
 
-  return () => {
-    node.remove();
-    unmountInstance(instance);
+  if (component) {
+    const instance = createInstance();
+    pushInstance(instance);
+    const node = component();
+    popInstance();
+    root.appendChild(node);
+    instance.mountedHooks.forEach((fn) => fn());
+    return;
+  }
+
+  return {
+    router(routes: Route[]) {
+      function App() {
+        return h(RouterView, { routes });
+      }
+      const instance = createInstance();
+      pushInstance(instance);
+      const node = App();
+      popInstance();
+      root.appendChild(node);
+      instance.mountedHooks.forEach((fn) => fn());
+    },
   };
 }
 
