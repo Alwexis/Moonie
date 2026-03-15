@@ -8,13 +8,45 @@ export function generateCode(node) {
     }
     if (node.type === "Element") {
         const tag = node.tag;
+        if (tag === "slot") {
+            const slotName = node.props?.name;
+            if (slotName) {
+                return `slots?.['${slotName}']?.()`;
+            }
+            return "children";
+        }
         const isComponent = tag[0] === tag[0].toUpperCase() && tag[0] !== tag[0].toLowerCase();
-        const propsCode = generateProps(node.props ?? {}, isComponent);
+        if (isComponent) {
+            // separacion de children con slot= de los normales
+            const normalChildren = node.children?.filter((c) => !c.props?.slot) ?? [];
+            const slottedChildren = node.children?.filter((c) => c.props?.slot) ?? [];
+            // generamos el objeto slots si hay slotted children
+            let propsCode = generateProps(node.props ?? {}, true);
+            if (slottedChildren.length > 0) {
+                const slotsCode = slottedChildren
+                    .map((c) => {
+                    const slotName = c.props.slot;
+                    const { slot, ...restProps } = c.props;
+                    const nodeCode = generateCode({ ...c, props: restProps });
+                    return `'${slotName}': () => ${nodeCode}`;
+                })
+                    .join(", ");
+                // inyectamos slots dentro de los props
+                propsCode =
+                    propsCode === "{}"
+                        ? `{ slots: { ${slotsCode} } }`
+                        : propsCode.replace(/^{/, `{ slots: { ${slotsCode} }, `);
+            }
+            const childrenCode = normalChildren.length > 0
+                ? `[${generateCodeNodes(normalChildren)}]`
+                : "[]";
+            return `h(${tag}, ${propsCode}, ${childrenCode})`;
+        }
+        const propsCode = generateProps(node.props ?? {}, false);
         const childrenCode = node.children && node.children.length > 0
             ? `[${generateCodeNodes(node.children)}]`
             : "[]";
-        const tagCode = isComponent ? tag : `'${tag}'`;
-        return `h(${tagCode}, ${propsCode}, ${childrenCode})`;
+        return `h('${tag}', ${propsCode}, ${childrenCode})`;
     }
     if (node.type === "Directive") {
         if (node.directive === "if") {
