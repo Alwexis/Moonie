@@ -57,8 +57,8 @@ export function RouterView({
     currentElement = component();
     popInstance();
     currentChildInstance = instance;
-    instance.mountedHooks.forEach((fn) => fn());
     anchor.parentNode?.insertBefore(currentElement, anchor);
+    instance.mountedHooks.forEach((fn) => fn());
   }
 
   function _mountRoute(route: Route) {

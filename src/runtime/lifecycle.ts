@@ -11,8 +11,15 @@ import { Route, RouterView } from "./router.js";
 /**
  * se ejecuta cuando un componente se monta, se almacenan los efectos en el currentInstance para ejecutarse luego.
  */
-export function onMount(fn: Function) {
-  currentInstance?.mountedHooks.push(fn);
+export function onMount(fn: () => (() => void) | void | Promise<void>) {
+  if (!currentInstance) return;
+  const instance = currentInstance;
+  instance.mountedHooks.push(async () => {
+    const cleanup = await fn();
+    if (typeof cleanup === "function") {
+      instance.unmountedHooks.push(cleanup);
+    }
+  });
 }
 
 /**
@@ -42,6 +49,8 @@ export function mount(selector: string, component?: () => HTMLElement) {
 
   return {
     router(routes: Route[]) {
+      const { h } = require("./h.js");
+      const { RouterView } = require("./router.js");
       function App() {
         return h(RouterView, { routes });
       }
