@@ -55,14 +55,15 @@ function generateProps(
 
   const propsStr = entries
     .map(([key, value]) => {
+      const safeKey = /[^a-zA-Z0-9_$]/.test(key) ? `"${key}"` : key;
       if (value.reactive) {
         return isComponent
-          ? `${key}: ${value.expression}`
-          : `${key}: () => ${value.expression}`;
+          ? `${safeKey}: ${value.expression}`
+          : `${safeKey}: () => ${value.expression}`;
       } else if (value.event) {
-        return `${key}: ($event) => { ${value.expression} }`;
+        return `${safeKey}: ($event) => { ${value.expression} }`;
       } else {
-        return `${key}: \`${value}\``;
+        return `${safeKey}: \`${value}\``;
       }
     })
     .join(", ");
