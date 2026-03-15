@@ -40,6 +40,13 @@ export function tokenize(template: string): Token[] {
   while (pos < template.length) {
     let foundMatch = false;
 
+    // ignoramos comentarios
+    if (template.startsWith("<!--", pos)) {
+      const end = template.indexOf("-->", pos);
+      pos = end + 3;
+      continue;
+    }
+
     if (template[pos] === "{" && template[pos + 1] === "{") {
       const end = template.indexOf("}}", pos);
       const value = template.slice(pos + 2, end).trim();

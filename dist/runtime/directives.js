@@ -1,24 +1,28 @@
 import { effect } from "../reactive/effect.js";
 import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
 import { unmountInstance, onMount } from "./lifecycle.js";
+function toArray(result) {
+    return Array.isArray(result) ? result : [result];
+}
 export function If({ when, then, otherwise, }) {
     const anchor = document.createComment("moonie-if-anchor");
-    let currentElement;
+    let currentNodes = [];
     let currentChildInstance;
     function _mountBranch(branch) {
         const instance = createInstance();
         pushInstance(instance);
-        currentElement = branch();
+        const result = branch();
         popInstance();
         currentChildInstance = instance;
         instance.mountedHooks.forEach((fn) => fn());
-        anchor.parentNode?.insertBefore(currentElement, anchor);
+        currentNodes = toArray(result);
+        currentNodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
     }
     effect(() => {
-        currentElement?.remove(); // matamos el elemento renderizado actualmente
+        currentNodes.forEach((n) => n.remove());
         if (currentChildInstance)
-            unmountInstance(currentChildInstance); // si tiene instancia la desmontamos
-        currentElement = undefined;
+            unmountInstance(currentChildInstance);
+        currentNodes = [];
         currentChildInstance = undefined;
         if (when()) {
             _mountBranch(then);
@@ -28,40 +32,38 @@ export function If({ when, then, otherwise, }) {
         }
     });
     onMount(() => {
-        if (currentElement) {
-            anchor.parentNode?.insertBefore(currentElement, anchor);
-        }
+        currentNodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
     });
     return anchor;
 }
 export function For({ each, render, key, empty, }) {
     const anchor = document.createComment("moonie-for-anchor");
-    let emptyNode; // para poder eliminar el empty
-    let emptyInstance; // para poder desmontar empty
-    // componentes que están siendo renderizados actualmente
+    let emptyNodes = [];
+    let emptyInstance;
     const _renderized = new Map();
     function _mountItem(item, index) {
         const k = key(item, index);
         const instance = createInstance();
         pushInstance(instance);
-        const node = render(item);
+        const result = render(item);
         popInstance();
-        anchor.parentNode?.insertBefore(node, anchor);
-        _renderized.set(k, { node, instance });
+        const nodes = toArray(result);
+        nodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
+        _renderized.set(k, { nodes, instance });
         instance.mountedHooks.forEach((f) => f());
     }
     effect(() => {
         const list = typeof each === "function" ? each() : each;
-        const _len = list.length; // fuerza tracking de length
+        const _len = list.length;
         void _len;
         if (list.length === 0 && empty) {
-            // aca montamos la instancia de empty, no sin antes desmontar la de las instancia anterior.
             const instance = createInstance();
             pushInstance(instance);
-            emptyNode = empty();
+            const result = empty();
             popInstance();
             emptyInstance = instance;
-            anchor.parentNode?.insertBefore(emptyNode, anchor);
+            emptyNodes = toArray(result);
+            emptyNodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
             if (currentInstance) {
                 instance.mountedHooks.forEach((fn) => currentInstance?.mountedHooks.push(fn));
             }
@@ -70,16 +72,12 @@ export function For({ each, render, key, empty, }) {
             }
         }
         else {
-            // desmontamos la instancia y matamos el elemento empty si es que existen
             if (emptyInstance) {
                 unmountInstance(emptyInstance);
                 emptyInstance = undefined;
             }
-            if (emptyNode) {
-                emptyNode.remove();
-                emptyNode = undefined;
-            }
-            // hacemos la reconciliacion de elementos
+            emptyNodes.forEach((n) => n.remove());
+            emptyNodes = [];
             const previousKeys = new Set(_renderized.keys());
             list.forEach((item, index) => {
                 const k = key(item, index);
@@ -92,7 +90,7 @@ export function For({ each, render, key, empty, }) {
             });
             previousKeys.forEach((k) => {
                 const old = _renderized.get(k);
-                old?.node.remove();
+                old?.nodes.forEach((n) => n.remove());
                 if (old?.instance)
                     unmountInstance(old.instance);
                 _renderized.delete(k);
@@ -100,8 +98,8 @@ export function For({ each, render, key, empty, }) {
         }
     });
     onMount(() => {
-        _renderized.forEach(({ node }) => {
-            anchor.parentNode?.insertBefore(node, anchor);
+        _renderized.forEach(({ nodes }) => {
+            nodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
         });
     });
     return anchor;

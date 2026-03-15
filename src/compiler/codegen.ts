@@ -88,7 +88,11 @@ export function generateCodeNodes(nodes: ASTNode[]): string {
 
       if (match) {
         const [, variable, array, key] = match;
-        const renderCode = generateCodeNodes(node.children ?? []);
+        const children = node.children ?? [];
+        const renderCode =
+          children.length === 1
+            ? generateCodeNodes(children)
+            : `[${generateCodeNodes(children)}]`;
         const emptyCode = hasEmpty
           ? `, empty: () => ${generateCodeNodes(next.children ?? [])}`
           : "";
@@ -101,10 +105,21 @@ export function generateCodeNodes(nodes: ASTNode[]): string {
     } else if (node.type === "Directive" && node.directive === "if") {
       const next = nodes[i + 1];
       const hasElse = next?.type === "Directive" && next?.directive === "else";
-      const thenCode = generateCodeNodes(node.children ?? []);
-      const elseCode = hasElse
-        ? `, otherwise: () => ${generateCodeNodes(next.children ?? [])}`
-        : "";
+      const thenChildren = node.children ?? [];
+      const thenCode =
+        thenChildren.length === 1
+          ? generateCodeNodes(thenChildren)
+          : `[${generateCodeNodes(thenChildren)}]`;
+
+      let elseCode = "";
+      if (hasElse) {
+        const elseChildren = next.children ?? [];
+        const elseNodes =
+          elseChildren.length === 1
+            ? generateCodeNodes(elseChildren)
+            : `[${generateCodeNodes(elseChildren)}]`;
+        elseCode = `, otherwise: () => ${elseNodes}`;
+      }
 
       result.push(
         `h(If, { when: () => ${node.condition}, then: () => ${thenCode}${elseCode} })`,
