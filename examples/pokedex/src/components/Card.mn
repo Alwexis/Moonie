@@ -1,0 +1,33 @@
+<script>
+  import { navigate } from "moonie";
+  import clsx from "clsx";
+  import { POKEMON_TYPE_STYLES } from "../lib/constant";
+
+  const { pokemon } = props;
+  const typeClasses = (type) =>
+    clsx(
+      "text-xs px-2 py-1 rounded-full capitalize",
+      POKEMON_TYPE_STYLES[type] || "bg-gray-200 text-gray-800",
+    );
+</script>
+
+<template>
+  <section
+    @click="navigate(`/pokemon/${pokemon.id}`)"
+    :title="`Ver detalles de ${pokemon.name}`"
+    class="rounded-md flex flex-col items-center justify-center bg-neutral-50 hover:bg-neutral-100 transition-all border border-neutral-200 cursor-pointer px-6 py-4">
+    <span class="self-end">#{{ pokemon.id }}</span>
+    <img :src="pokemon.sprites.front_default" :alt="pokemon.name" />
+    <div class="flex flex-col gap-y-2">
+      <div class="flex items-center justify-center gap-x-2">
+        @for (type of pokemon.types; key: `${pokemon.name}-${type.slot}`) {
+          <span
+            :class="clsx('text-xs px-2 py-1 rounded-full capitalize', `bg-type-${type.type.name}`, `text-type-${type.type.name}`)"
+            >{{ type.type.name }}
+          </span>
+        }
+      </div>
+      <span class="text-center font-bold capitalize">{{ pokemon.name }}</span>
+    </div>
+  </section>
+</template>
