@@ -1,5 +1,7 @@
 import { effect } from "../reactive/effect.js";
 import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
+// esto es porque los svg tienen propiedades distintas y son case sensitive (usan XML)
+const SVG_TAGS = new Set(['svg', 'path', 'circle', 'rect', 'line', 'polyline', 'polygon', 'ellipse', 'g', 'defs', 'use', 'symbol', 'clipPath', 'mask', 'text', 'tspan', 'linearGradient', 'radialGradient', 'stop', 'filter', 'feBlend', 'pattern', 'marker', 'image', 'foreignObject']);
 export function h(tag, props, children) {
     if (typeof tag === "function") {
         const instance = createInstance();
@@ -26,21 +28,24 @@ export function h(tag, props, children) {
         }
         return node;
     }
-    const element = document.createElement(tag);
+    const isSvg = SVG_TAGS.has(tag);
+    const element = isSvg
+        ? document.createElementNS('http://www.w3.org/2000/svg', tag)
+        : document.createElement(tag);
     if (props) {
-        applyProps(element, props);
+        applyProps(element, props, isSvg);
     }
     if (children) {
         mountChild(element, children);
     }
     return element;
 }
-function applyProps(element, props) {
+function applyProps(element, props, isSvg = false) {
     for (const [prop, value] of Object.entries(props)) {
-        applyProp(element, prop, value);
+        applyProp(element, prop, value, isSvg);
     }
 }
-function applyProp(element, prop, value) {
+function applyProp(element, prop, value, isSvg = false) {
     if (prop.startsWith("on")) {
         const eventName = prop.slice(2).toLowerCase();
         element.addEventListener(eventName, value);
@@ -66,23 +71,19 @@ function applyProp(element, prop, value) {
     }
     else {
         if (typeof value === "function") {
-            if (prop in HTMLElement) {
-                effect(() => {
-                    element[prop] = value();
-                });
+            if (!isSvg && prop in element) {
+                effect(() => { element[prop] = value(); });
             }
             else {
-                effect(() => {
-                    element.setAttribute(prop, value());
-                });
+                effect(() => { element.setAttribute(prop, value()); });
             }
         }
         else {
-            if (prop in HTMLElement) {
+            if (!isSvg && prop in element) {
                 element[prop] = value;
             }
             else {
-                element.setAttribute(prop, value);
+                element.setAttribute(prop, String(value));
             }
         }
     }
