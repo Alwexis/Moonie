@@ -17,6 +17,13 @@ También es una carta de amor a mi gata Moonie :)
 
 La mayoría de los frameworks modernos traen un compilador, un runtime de 40kb, un diffing algorithm y tres capas de abstracción para hacer lo que el browser ya sabe hacer solo. Moonie apuesta por lo contrario: reactividad granular que toca exactamente lo que cambió, nada más.
 
+## Documentación y Proyectos
+### Documentación
+Proximamente
+
+### Proyectos
+[Pokédex](https://moonie-pokedex.vercel.app/): Es una APP desarrollada usando como stack Moonie, Vite y TailwindCSS. Integra la PokeAPI.
+
 ## Instalación
 npm:
 ```bash
