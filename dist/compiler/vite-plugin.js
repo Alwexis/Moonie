@@ -27,6 +27,7 @@ export function mooniePlugin() {
     ${imports}
     
     export default function Component(props = {}) {
+      const { children, slots, ...rest } = props;
       ${scriptCode}
       return ${templateCode};
     }
