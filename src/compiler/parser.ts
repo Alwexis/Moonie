@@ -1,5 +1,12 @@
 import type { Token } from "./tokenizer.js";
 
+// para manejar etiquetas void; que no necesraiemente son autoclosingtag, pero tampoco necesitan cerrarse
+const _VOID_ELEMENTS = new Set([
+  'img', 'br', 'hr', 'input', 'meta', 'link', 
+  'area', 'base', 'col', 'embed', 'param', 
+  'source', 'track', 'wbr'
+]);
+
 export interface ASTNode {
   type: "Element" | "Text" | "Directive" | "Interpolation";
   tag?: string;
@@ -60,6 +67,11 @@ export function parse(tokens: Token[]): ASTNode[] {
 
     if (peek()?.type === "SelfClosingTag") {
       consume();
+      return { type: "Element", tag, props, children: [] };
+    }
+
+    if (_VOID_ELEMENTS.has(tag)) {
+      if (peek()?.type === "OpenTagEnd") consume();
       return { type: "Element", tag, props, children: [] };
     }
 

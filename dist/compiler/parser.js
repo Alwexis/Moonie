@@ -1,3 +1,9 @@
+// para manejar etiquetas void; que no necesraiemente son autoclosingtag, pero tampoco necesitan cerrarse
+const _VOID_ELEMENTS = new Set([
+    'img', 'br', 'hr', 'input', 'meta', 'link',
+    'area', 'base', 'col', 'embed', 'param',
+    'source', 'track', 'wbr'
+]);
 export function parse(tokens) {
     let pos = 0;
     function peek() {
@@ -42,6 +48,11 @@ export function parse(tokens) {
         }
         if (peek()?.type === "SelfClosingTag") {
             consume();
+            return { type: "Element", tag, props, children: [] };
+        }
+        if (_VOID_ELEMENTS.has(tag)) {
+            if (peek()?.type === "OpenTagEnd")
+                consume();
             return { type: "Element", tag, props, children: [] };
         }
         consume(); // OpenTagEnd
