@@ -6,19 +6,7 @@ export function h(tag, props, children) {
     if (typeof tag === "function") {
         const instance = createInstance();
         pushInstance(instance);
-        const resolvedProps = {};
-        for (const [key, value] of Object.entries(props ?? {})) {
-            if (typeof value === "function" && value.__reactive) {
-                Object.defineProperty(resolvedProps, key, {
-                    get: () => value(),
-                    enumerable: true,
-                });
-            }
-            else {
-                resolvedProps[key] = value;
-            }
-        }
-        const node = tag({ children, ...resolvedProps });
+        const node = tag({ children, ...(props ?? {}) });
         popInstance();
         if (currentInstance) {
             instance.mountedHooks.forEach((fn) => currentInstance?.mountedHooks.push(fn));

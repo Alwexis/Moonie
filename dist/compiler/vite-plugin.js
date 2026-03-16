@@ -28,16 +28,23 @@ export function mooniePlugin() {
             const ast = parse(tokens);
             const templateCode = generateCodeNodes(ast);
             const output = `
-    import { h, If, For } from 'moonie';
-    ${imports}
+import { h, If, For } from 'moonie';
+${imports}
     
-    export default function Component(props = {}) {
-      const { children, slots, ...rest } = props;
-      ${scriptCode}
-      return ${templateCode};
+export default function Component(rawProps = {}) {
+  const props = new Proxy(rawProps, {
+    get(target, key) {
+      const val = target[key];
+      if (typeof val === 'function' && val.__reactive) return val();
+      return val;
     }
+  });
+  const { children, slots } = rawProps;
+  ${scriptCode}
+  return ${templateCode};
+}
     `;
-            return { code: output };
+            return { code: output.trim() };
         },
     };
 }

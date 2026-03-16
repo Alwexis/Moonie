@@ -45,7 +45,6 @@ export function RouterView({ routes, fallback, }) {
     let currentElement;
     let currentChildInstance;
     function _mount(component) {
-        console.log("_mount called", component);
         const instance = createInstance();
         pushInstance(instance);
         currentElement = component();
@@ -60,7 +59,6 @@ export function RouterView({ routes, fallback, }) {
         _mount(route.component);
     }
     effect(() => {
-        console.log("RouterView effect, path:", currentPath.get());
         // desmontar vista anterior
         if (currentElement) {
             currentElement.remove();
@@ -122,12 +120,13 @@ export function useParams() {
  * Wrapper de etiqueta anchor que previene la navegación nativa y la reemplaza por navigate.
  */
 export function Link({ to, children, ...props }) {
+    const resolveTo = typeof to === "function" ? to : () => to;
     return h("a", {
         ...props,
-        href: to,
+        href: resolveTo,
         onClick: (e) => {
             e.preventDefault();
-            navigate(to);
+            navigate(resolveTo());
         },
     }, children);
 }
