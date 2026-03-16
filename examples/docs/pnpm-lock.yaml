@@ -21,8 +21,8 @@ importers:
         specifier: ^11.11.1
         version: 11.11.1
       moonie:
-        specifier: github:Alwexis/Moonie
-        version: https://codeload.github.com/Alwexis/Moonie/tar.gz/f38bbf80c24ff8bb858ca4428ecf0fd6bb33681d
+        specifier: link:..\..
+        version: link:../..
       tailwind-animations:
         specifier: ^1.0.1
         version: 1.0.1(tailwindcss@4.2.1)
@@ -442,10 +442,6 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
-  moonie@https://codeload.github.com/Alwexis/Moonie/tar.gz/f38bbf80c24ff8bb858ca4428ecf0fd6bb33681d:
-    resolution: {tarball: https://codeload.github.com/Alwexis/Moonie/tar.gz/f38bbf80c24ff8bb858ca4428ecf0fd6bb33681d}
-    version: 1.0.0
-
   nanoid@3.3.11:
     resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -838,10 +834,6 @@ snapshots:
   magic-string@0.30.21:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
-
-  moonie@https://codeload.github.com/Alwexis/Moonie/tar.gz/f38bbf80c24ff8bb858ca4428ecf0fd6bb33681d:
-    dependencies:
-      '@types/node': 25.5.0
 
   nanoid@3.3.11: {}
 

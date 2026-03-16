@@ -1,0 +1,104 @@
+<script>
+  import DocsLayout from "../components/ui/DocsLayout.mn";
+  import CodeBlock from "../components/ui/CodeBlock.mn";
+  import {
+    valueExample,
+    reactiveExample,
+    computedExample,
+    effectExample,
+    watchExample,
+  } from "../examples/reactivity";
+</script>
+
+<template>
+  <DocsLayout>
+    <h1 className="text-3xl font-bold text-foreground mb-2">Reactividad</h1>
+    <p className="text-muted-foreground mb-8">
+      El sistema de señales de Moonie te da control granular sobre qué se
+      actualiza y cuándo. Todo se importa desde
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm"
+        >moonie</code
+      >.
+    </p>
+
+    <h2 id="value">value()</h2>
+    <p>
+      Crea una señal reactiva con un valor primitivo. Usa
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.get()</code>
+      {{ " " }}para leer y
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.set()</code>
+      {{ " " }}para escribir.
+    </p>
+    <CodeBlock language="typescript" :code="valueExample" />
+
+    <h2 id="reactive">reactive()</h2>
+    <p>
+      Envuelve un objeto en un Proxy reactivo. Cada propiedad se trackea
+      automáticamente. Soporta
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.set(newObj)</code>
+      {{ " " }}para reemplazar el objeto completo, y acepta
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">null</code>
+      {{ " " }}o
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">undefined</code>
+      {{ " " }}como valor inicial.
+    </p>
+    <CodeBlock language="typescript" :code="reactiveExample" />
+
+    <h2 id="computed">computed()</h2>
+    <p>
+      Deriva un valor de otras señales. Es lazy — se recalcula solo cuando sus
+      dependencias cambian. Úsalo cuando el valor dependa de
+      <strong>múltiples</strong> señales; para transformaciones simples,
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">value()</code>
+      {{ " " }}puede ser suficiente.
+    </p>
+    <CodeBlock language="typescript" :code="computedExample" />
+
+    <h2 id="effect">effect()</h2>
+    <p>
+      Ejecuta una función y la re-ejecuta cada vez que sus dependencias
+      reactivas cambian. El tracking es automático — Moonie detecta qué señales
+      lees dentro del callback.
+    </p>
+    <CodeBlock language="typescript" :code="effectExample" />
+
+    <h2 id="watch">watch()</h2>
+    <p>
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">watch()</code>
+      {{ " " }}es similar a
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">effect()</code>
+      {{ " " }}
+      pero solo dispara en cambios y te da acceso al valor anterior y nuevo.
+      Ideal para side effects donde necesitas comparar.
+    </p>
+    <CodeBlock language="typescript" :code="watchExample" />
+
+    <p>
+      <!-- prettier-ignore -->
+      <strong>¿Cuándo usar
+        <!-- prettier-ignore -->
+        <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">watch</code>
+        vs
+        <!-- prettier-ignore -->
+        <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">effect</code>?</strong>
+    </p>
+    <ul>
+      <li>
+        <strong>effect()</strong> — corre inmediatamente y reacciona a cada
+        cambio
+      </li>
+      <li>
+        <strong>watch()</strong> — solo dispara cuando el valor cambia, con
+        acceso al valor previo
+      </li>
+    </ul>
+  </DocsLayout>
+</template>

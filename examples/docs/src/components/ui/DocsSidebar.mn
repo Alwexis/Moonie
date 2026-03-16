@@ -50,7 +50,7 @@ onMount(() => {
           @if (expandedSections.get().has(section.title)) {
             <div class="flex flex-col ml-4 border-l border-border space-y-0.5 mb-2">
               @for (item of section.items; key: item) {
-                <Link :to="item.href" :class="clsx('block pl-4 py-1.5 text-sm transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': item.href.endsWith(currentHash.get()) && currentHash.get().trim().length > 0, 'text-muted-foreground hover:text-foreground': !item.href.endsWith(currentHash.get()) })">
+                <Link :to="item.href" :class="clsx('block text-muted-foreground hover:text-foreground pl-4 py-1.5 text-sm transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': item.href.endsWith(currentHash.get()) && currentHash.get().trim().length > 0 })">
                   {{ item.title }}
                 </Link>
               }
