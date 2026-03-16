@@ -3,6 +3,9 @@ import Home from "./views/Home.mn";
 import GettingStarted from "./views/GettingStarted.mn";
 import Reactivity from "./views/Reactivity.mn";
 import Components from "./views/Components.mn";
+import Templates from "./views/Templates.mn";
+import Router from "./views/Router.mn";
+import APIReference from "./views/APIReference.mn";
 
 export const routes: Route[] = [
   {
@@ -20,5 +23,17 @@ export const routes: Route[] = [
   {
     path: "/docs/components",
     component: Components,
+  },
+  {
+    path: "/docs/templates",
+    component: Templates,
+  },
+  {
+    path: "/docs/router",
+    component: Router,
+  },
+  {
+    path: "/docs/api",
+    component: APIReference,
   },
 ];

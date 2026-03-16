@@ -16,9 +16,9 @@
     <p className="text-muted-foreground mb-8">
       El sistema de señales de Moonie te da control granular sobre qué se
       actualiza y cuándo. Todo se importa desde
-      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm"
-        >moonie</code
-      >.
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">moonie</code>
+      .
     </p>
 
     <h2 id="value">value()</h2>

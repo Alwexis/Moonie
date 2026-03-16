@@ -1,0 +1,89 @@
+<script>
+  import DocsLayout from "../components/ui/DocsLayout.mn";
+  import CodeBlock from "../components/ui/CodeBlock.mn";
+  import {
+    interpolationExample,
+    bindingExample,
+    refExample,
+    eventExample,
+    ifElseExample,
+    forEmptyExample,
+    svgExample,
+  } from "../examples/templates";
+</script>
+
+<template>
+  <DocsLayout>
+    <h1 class="text-3xl font-bold text-foreground mb-2">Templates</h1>
+    <p class="text-muted-foreground mb-8">
+      El sistema de templates de Moonie es conciso y expresivo. Se compila a
+      operaciones DOM directas — sin Virtual DOM de por medio.
+    </p>
+
+    <h2 id="interpolacion">Interpolación {{ `\{\{ \}\}` }}</h2>
+    <p>Usa doble llave para insertar expresiones reactivas en tu markup:</p>
+    <CodeBlock
+      title="MyComponent.mn"
+      :code="interpolationExample"
+      language="xml" />
+
+    <h2 id="binding">Binding de atributos</h2>
+    <p>
+      Usa
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">:</code>
+      {{ " " }}para hacer bind dinámico de atributos:
+    </p>
+    <CodeBlock title="MyComponent.mn" language="xml" :code="bindingExample" />
+
+    <h2 id="ref">Referencia al DOM</h2>
+    <p>
+      Usa
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">:ref</code>
+      {{ " " }}para obtener una referencia directa al elemento DOM:
+    </p>
+    <CodeBlock language="xml" :code="refExample" />
+
+    <h2 id="eventos">Eventos</h2>
+    <p>
+      Usa
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">{{`@`}}</code>
+      {{ " " }}para escuchar eventos DOM:
+    </p>
+    <CodeBlock language="xml" :code="eventExample" />
+
+    <h2 id="if-else">{{ `@if ` }} / {{ `@else` }}</h2>
+    <p>Renderizado condicional con llaves:</p>
+    <CodeBlock language="xml" :code="ifElseExample" />
+
+    <h2 id="for-empty">{{ `@for ` }} / {{ `@empty` }}</h2>
+    <p>
+      Itera sobre listas reactivas. Usa
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">key:</code>
+      {{ " " }}para identificar elementos y
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">{{ `@empty` }}</code>
+      {{ " " }}para el caso vacío:
+    </p>
+    <CodeBlock language="xml" :code="forEmptyExample" />
+
+    <h2 id="svg">SVG y elementos especiales</h2>
+    <p>Moonie soporta SVG inline con bindings reactivos:</p>
+    <CodeBlock language="xml" :code="svgExample" />
+    <p>
+      Los elementos
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">{{`<svg />`}}</code>
+      ,
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">{{`<math />`}}</code>
+      y
+      <!-- prettier-ignore -->
+      <code class="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">{{`<foreignObject />`}}</code>
+      {{ " " }}se manejan con su namespace correcto automáticamente.
+    </p>
+  </DocsLayout>
+</template>

@@ -1,0 +1,77 @@
+<script>
+  import DocsLayout from "../components/ui/DocsLayout.mn";
+  import CodeBlock from "../components/ui/CodeBlock.mn";
+  import {
+    routerInAppExample,
+    withoutRouterExample,
+    routerInSeparateFileExample,
+    dynamicRoutesExample,
+    useParamsExample,
+    navigateExample,
+    linkExample,
+  } from "../examples/router";
+</script>
+
+<template>
+  <DocsLayout>
+    <h1 className="text-3xl font-bold text-foreground mb-2">Router</h1>
+    <p className="text-muted-foreground mb-8">
+      Moonie incluye un router ligero integrado. Todo se importa desde
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">moonie/router</code>
+      .
+    </p>
+
+    <h2 id="configuracion">Configuración básica</h2>
+    <p>
+      Usa
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">mount().router()</code>
+      {{ " " }}para montar tu app con rutas:
+    </p>
+    <CodeBlock
+      title="main.ts"
+      language="typescript"
+      :code="routerInAppExample" />
+    <p>Para montar sin router, pasa el componente directamente:</p>
+    <CodeBlock
+      title="main.ts"
+      language="typescript"
+      :code="withoutRouterExample" />
+    <p>Para montar con rutas en un archivo separado:</p>
+    <CodeBlock
+      title="router.ts"
+      language="typescript"
+      :code="routerInSeparateFileExample" />
+
+    <h2 id="dinamicas">Rutas dinámicas con parámetros</h2>
+    <p>
+      Define parámetros con
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">:param</code>
+      :
+    </p>
+    <CodeBlock language="typescript" :code="dynamicRoutesExample" />
+
+    <h2 id="useparams">useParams()</h2>
+    <p>Accede a los parámetros de la ruta actual:</p>
+    <CodeBlock title="UserProfile.mn" language="xml" :code="useParamsExample" />
+
+    <h2 id="navigate">navigate()</h2>
+    <p>Navega programáticamente desde cualquier lugar:</p>
+    <CodeBlock language="typescript" :code="navigateExample" />
+
+    <h2 id="link">Link</h2>
+    <p>
+      Componente anchor que usa
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">navigate</code>
+      {{ " " }}internamente para navegación SPA. Agrega automáticamente una
+      clase
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">active</code>
+      {{ " " }}cuando la ruta coincide.
+    </p>
+    <CodeBlock language="xml" :code="linkExample" />
+  </DocsLayout>
+</template>
