@@ -25,7 +25,7 @@ export declare function useParams(): Record<string, string>;
  * Wrapper de etiqueta anchor que previene la navegación nativa y la reemplaza por navigate.
  */
 export declare function Link({ to, children, ...props }: {
-    to: string;
-    children: string;
+    to: string | (() => string);
+    children: any;
     [key: string]: any;
 }): any;

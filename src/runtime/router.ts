@@ -75,7 +75,6 @@ export function RouterView({
   let currentChildInstance: ComponentInstance | undefined;
 
   function _mount(component: () => HTMLElement) {
-    console.log("_mount called", component);
     const instance = createInstance();
     pushInstance(instance);
     currentElement = component();
@@ -92,7 +91,6 @@ export function RouterView({
   }
 
   effect(() => {
-    console.log("RouterView effect, path:", currentPath.get());
     // desmontar vista anterior
     if (currentElement) {
       currentElement.remove();
@@ -170,18 +168,20 @@ export function Link({
   children,
   ...props
 }: {
-  to: string;
-  children: string;
+  to: string | (() => string);
+  children: any;
   [key: string]: any;
 }) {
+  const resolveTo = typeof to === "function" ? to : () => to;
+
   return h(
     "a",
     {
       ...props,
-      href: to,
+      href: resolveTo,
       onClick: (e: MouseEvent) => {
         e.preventDefault();
-        navigate(to);
+        navigate(resolveTo());
       },
     },
     children,

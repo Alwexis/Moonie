@@ -78,9 +78,10 @@ function generateProps(props, isComponent = false) {
             return `ref: ${value.expression}`;
         }
         if (value.reactive) {
+            const fn = `() => ${value.expression}`;
             return isComponent
-                ? `${safeKey}: ${value.expression}`
-                : `${safeKey}: () => ${value.expression}`;
+                ? `${safeKey}: Object.assign(${fn}, { __reactive: true })`
+                : `${safeKey}: ${fn}`;
         }
         else if (value.event) {
             return `${safeKey}: ($event) => { ${value.expression} }`;
