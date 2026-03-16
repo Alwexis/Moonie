@@ -5,6 +5,8 @@ import { createInstance, popInstance, pushInstance, } from "./instance.js";
 import { onMount, unmountInstance } from "./lifecycle.js";
 // aca guardamos como valor reactivo el current path para visar cuando cambia
 export const currentPath = value(typeof window !== "undefined" ? window.location.pathname : "/");
+// guardamos valor reactivo de current hash
+export const currentHash = value(typeof window !== "undefined" ? window.location.hash.slice(1) : "");
 // parámetros
 export const currentParams = value({});
 // funcion para navegar en la spa
@@ -13,6 +15,7 @@ export function navigate(to) {
     const currentCleanPath = currentPath.get().split("#")[0];
     if (path === currentCleanPath) {
         window.history.pushState(null, "", to);
+        currentHash.set(hash ?? "");
         if (hash) {
             requestAnimationFrame(() => {
                 document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
@@ -21,6 +24,7 @@ export function navigate(to) {
         return;
     }
     currentPath.set(path);
+    currentHash.set(hash ?? "");
     window.history.pushState(null, "", to);
     if (hash) {
         requestAnimationFrame(() => {
@@ -33,6 +37,7 @@ if (typeof window !== "undefined") {
     window.addEventListener("popstate", () => {
         const [path] = window.location.pathname.split("#");
         currentPath.set(path);
+        currentHash.set(window.location.hash.slice(1));
     });
 }
 export function RouterView({ routes, fallback, }) {

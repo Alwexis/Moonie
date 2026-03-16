@@ -2,6 +2,10 @@ export declare const currentPath: {
     get(): string;
     set(newValue: string): void;
 };
+export declare const currentHash: {
+    get(): string;
+    set(newValue: string): void;
+};
 export declare const currentParams: {
     get(): Record<string, string>;
     set(newValue: Record<string, string>): void;
