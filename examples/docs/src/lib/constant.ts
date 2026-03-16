@@ -21,7 +21,7 @@ export const NAVIGATION_DATA = [
     title: "Reactividad",
     href: "/docs/reactivity",
     items: [
-      { title: "value()", href: "/docs/reactivity" },
+      { title: "value()", href: "/docs/reactivity#value" },
       { title: "reactive()", href: "/docs/reactivity#reactive" },
       { title: "computed()", href: "/docs/reactivity#computed" },
       { title: "effect()", href: "/docs/reactivity#effect" },
@@ -32,7 +32,7 @@ export const NAVIGATION_DATA = [
     title: "Componentes",
     href: "/docs/components",
     items: [
-      { title: "Anatomía de .mn", href: "/docs/components" },
+      { title: "Anatomía de .mn", href: "/docs/components#anatomia" },
       { title: "Props", href: "/docs/components#props" },
       { title: "Eventos", href: "/docs/components#eventos" },
       { title: "Slots", href: "/docs/components#slots" },

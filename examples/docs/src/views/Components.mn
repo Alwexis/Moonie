@@ -1,0 +1,94 @@
+<script>
+  import DocsLayout from "../components/ui/DocsLayout.mn";
+  import CodeBlock from "../components/ui/CodeBlock.mn";
+  import {
+    anatomyExample,
+    propsExample,
+    propsUsageExample,
+    eventsExample,
+    eventsExampleUsage,
+    slotsExample,
+    slotsExampleUsage,
+    compositionExample,
+    lifecycleExample,
+  } from "../examples/components";
+</script>
+
+<template>
+  <DocsLayout>
+    <h1 className="text-3xl font-bold text-foreground mb-2">Componentes</h1>
+    <p className="text-muted-foreground mb-8">
+      Todo en Moonie es un componente. Archivos
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.mn</code>
+      {{ " " }}que se compilan a JavaScript puro en build time.
+    </p>
+
+    <h2 id="anatomia">Anatomía de un .mn</h2>
+    <p>
+      Un archivo
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.mn</code>
+      {{ " " }}tiene dos bloques principales:
+    </p>
+    <CodeBlock title="MyComponent.mn" :code="anatomyExample" language="xml" />
+
+    <h2 id="props">Props</h2>
+    <p>
+      Las props llegan directamente desde el objeto
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">props</code>
+      . {{ " " }}No se necesita
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">defineProps</code>
+      {{ " " }}— simplemente desestructura lo que necesites:
+    </p>
+    <CodeBlock title="Greeting.mn" :code="propsExample" language="xml" />
+    <p>Uso:</p>
+    <CodeBlock :code="propsUsageExample" language="xml" />
+
+    <h2 id="eventos">Eventos</h2>
+    <p>
+      Los eventos se pasan como callbacks a través de props. Sin
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">defineEmits</code>
+      {{ " " }}— es solo una función que el padre envía:
+    </p>
+    <CodeBlock title="SearchBox.mn" language="xml" :code="eventsExample" />
+    <p>Desde el padre:</p>
+    <CodeBlock :code="eventsExampleUsage" language="xml" />
+
+    <h2 id="slots">Slots</h2>
+    <p>Moonie soporta slots para composición flexible de contenido:</p>
+    <CodeBlock title="Card.mn" :code="slotsExample" language="xml" />
+    <p>Uso con slots nombrados:</p>
+    <CodeBlock :code="slotsExampleUsage" language="xml" />
+
+    <h2 id="composicion">Composición</h2>
+    <p>
+      Importa componentes directamente. No necesitas registrarlos — solo
+      impórtalos:
+    </p>
+    <CodeBlock title="App.mn" :code="compositionExample" language="xml" />
+
+    <h2 id="lifecycle">Lifecycle Hooks</h2>
+    <p>
+      Moonie ofrece hooks de ciclo de vida importados desde
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">moonie</code>
+      :
+    </p>
+    <CodeBlock :code="lifecycleExample" language="xml" />
+    <ul>
+      <li>
+        <strong>onMount(fn)</strong> — se ejecuta cuando el componente está en
+        el DOM. Si retorna una función, se registra automáticamente como cleanup
+        en unmount
+      </li>
+      <li>
+        <strong>onUnmount(fn)</strong> — se ejecuta cuando el componente se
+        desmonta
+      </li>
+    </ul>
+  </DocsLayout>
+</template>
