@@ -1,0 +1,43 @@
+<script>
+  // imports mas comunes para los ejemplos de codigo
+  import { onMount, ref } from "moonie";
+
+  import hljs from "highlight.js/lib/core";
+  import xml from "highlight.js/lib/languages/xml";
+  import typescript from "highlight.js/lib/languages/typescript";
+  import powershell from "highlight.js/lib/languages/powershell";
+  import bash from "highlight.js/lib/languages/bash";
+  import "highlight.js/styles/github-dark.css";
+
+  hljs.registerLanguage("xml", xml);
+  hljs.registerLanguage("typescript", typescript);
+  hljs.registerLanguage("powershell", powershell);
+  hljs.registerLanguage("bash", bash);
+
+  const { code, language, title } = props;
+
+  const codeBlock = ref();
+
+  onMount(() => {
+    if (codeBlock.el) {
+      codeBlock.el.textContent = code;
+      hljs.highlightElement(codeBlock.el);
+    }
+  });
+</script>
+
+<template>
+  <div class="rounded-lg border border-border overflow-hidden mb-6">
+    @if (title) {
+      <div
+        class="px-4 py-2 bg-secondary/50 border-b border-border text-xs text-muted-foreground font-mono">
+        {{ title }}
+      </div>
+    }
+    <pre class="overflow-x-auto text-sm leading-relaxed bg-[hsl(220 18% 8%)]">
+      <code :ref="codeBlock" :class="`language-${language}`">
+        {{ code.trim() }}
+      </code>
+    </pre>
+  </div>
+</template>

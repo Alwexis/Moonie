@@ -1,0 +1,16 @@
+<script>
+  import DocsSidebar from "./DocsSidebar.mn";
+</script>
+
+<template>
+  <div class="min-h-screen bg-background">
+    <DocsSidebar />
+    <main class="ml-64">
+      <div class="max-w-3xl mx-auto px-8 py-12 animate-fade-in">
+        <article class="doc-prose">
+          <slot />
+        </article>
+      </div>
+    </main>
+  </div>
+</template>

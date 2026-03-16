@@ -1,0 +1,30 @@
+<script>
+  import { Link } from "moonie/router";
+</script>
+
+<template>
+  <nav class="fixed top-0 w-full z-50 border-b border-border bg-background/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <Link to="/" class="flex items-center gap-2.5">
+        <img src="/moonie-framework.webp" alt="Moonie" class="w-7 h-7" />
+        <span class="text-foreground font-semibold text-lg">Moonie</span>
+      </Link>
+      <div class="flex items-center gap-6">
+        <Link to="/docs/getting-started" class="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150">
+          Docs
+        </Link>
+        <Link to="/docs/api" class="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150">
+          API
+        </Link>
+        <a
+          href="https://github.com/alwexis/moonie"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150"
+        >
+          GitHub
+        </a>
+      </div>
+    </div>
+  </nav>
+</template>

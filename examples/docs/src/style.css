@@ -1,0 +1,132 @@
+@import "tailwindcss";
+@import "tailwind-animations";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-background: hsl(220 20% 4%);
+  --color-foreground: hsl(210 40% 98%);
+
+  --color-card: hsl(220 18% 10%);
+  --color-card-foreground: hsl(210 40% 98%);
+  --color-popover: hsl(220 18% 10%);
+  --color-popover-foreground: hsl(210 40% 98%);
+  --color-primary: hsl(263 70% 66%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(220 18% 13%);
+  --color-secondary-foreground: hsl(210 40% 98%);
+  --color-muted: hsl(220 18% 13%);
+  --color-muted-foreground: hsl(215 20% 65%);
+  --color-accent: hsl(263 70% 66%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(210 40% 98%);
+  --color-border: hsl(217 25% 18%);
+  --color-input: hsl(217 25% 18%);
+  --color-ring: hsl(263 70% 66%);
+
+  --color-sidebar-background: hsl(220 18% 10%);
+  --color-sidebar-foreground: hsl(215 20% 65%);
+  --color-sidebar-primary: hsl(263 70% 66%);
+  --color-sidebar-primary-foreground: hsl(0 0% 100%);
+  --color-sidebar-accent: hsl(220 18% 15%);
+  --color-sidebar-accent-foreground: hsl(210 40% 98%);
+  --color-sidebar-border: hsl(217 25% 18%);
+  --color-sidebar-ring: hsl(263 70% 66%);
+
+  --color-code-bg: hsl(220 18% 8%);
+  --color-glow-primary: hsl(263 70% 66%);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-sans tracking-tight;
+  }
+
+  code {
+    @apply font-mono;
+  }
+}
+
+@layer utilities {
+  .glow-primary {
+    box-shadow: 0 0 80px 20px hsl(263 70% 66% / 0.15);
+  }
+
+  .glow-text {
+    text-shadow: 0 0 30px hsl(263 70% 66% / 0.5);
+  }
+
+  .doc-prose h2 {
+    @apply text-2xl font-semibold text-foreground mt-10 mb-4 pb-2 border-b border-border;
+  }
+
+  .doc-prose h3 {
+    @apply text-lg font-semibold text-foreground mt-8 mb-3;
+  }
+
+  .doc-prose p {
+    @apply text-muted-foreground leading-relaxed mb-4;
+  }
+
+  .doc-prose ul {
+    @apply list-disc list-inside text-muted-foreground mb-4 space-y-1;
+  }
+
+  .doc-prose ol {
+    @apply list-decimal list-inside text-muted-foreground mb-4 space-y-1;
+  }
+
+  .doc-prose strong {
+    @apply text-foreground font-medium;
+  }
+
+  .doc-prose a {
+    @apply text-primary hover:underline;
+  }
+
+  .doc-prose table {
+    @apply w-full text-sm mb-6;
+  }
+
+  .doc-prose thead th {
+    @apply text-left text-foreground font-medium pb-3 px-3;
+  }
+
+  .doc-prose tbody td {
+    @apply py-3 px-3 text-muted-foreground;
+  }
+
+  .doc-prose tbody tr:hover {
+    @apply bg-secondary/50;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(217 25% 25%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(217 25% 35%);
+}

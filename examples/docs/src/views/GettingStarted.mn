@@ -1,0 +1,85 @@
+<script>
+  import { onMount, ref } from "moonie";
+  import { Link } from "moonie/router";
+
+  import DocsLayout from "../components/ui/DocsLayout.mn";
+  import CodeBlock from "../components/ui/CodeBlock.mn";
+  // prettier-ignore
+  import { firstComponent, vitePlugin, mountApp, mountAppWithRouter, projectStructure } from "../examples/getting-started";
+</script>
+
+<template>
+  <DocsLayout>
+    <h1 className="text-3xl font-bold text-foreground mb-2">Getting Started</h1>
+    <p className="text-muted-foreground mb-8">
+      Comienza a construir con Moonie en minutos. TypeScript puro, sin
+      dependencias en runtime, ~3-4kb gzipped.
+    </p>
+
+    <h2 id="instalacion">Instalación</h2>
+    <p>
+      Instala Moonie y su plugin de Vite con tu gestor de paquetes favorito:
+    </p>
+    <CodeBlock language="powershell" code="npm install github:Alwexis/Moonie" />
+
+    <p>O con pnpm:</p>
+    <CodeBlock language="powershell" code="pnpm add github:Alwexis/Moonie" />
+
+    <h2 id="primer-componente">Tu primer componente .mn</h2>
+    <p>
+      Los componentes de Moonie usan la extensión
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.mn</code>
+      {{ " " }}
+      y contienen un bloque <strong>script </strong> y un bloque
+      <strong>template</strong>:
+    </p>
+    <CodeBlock
+      title="src/components/Counter.mn"
+      language="xml"
+      :code="firstComponent" />
+
+    <h2 id="vite-plugin">Configurar el plugin de Vite</h2>
+    <p>
+      El compilador de Moonie transforma archivos
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">.mn</code>
+      {{ " " }}
+      en JavaScript puro en build time. Agrega el plugin a tu
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">vite.config.ts</code>
+      :
+    </p>
+    <CodeBlock
+      title="vite.config.ts"
+      language="typescript"
+      :code="vitePlugin" />
+
+    <h2 id="montar">Montar la aplicación</h2>
+    <p>
+      Usa
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">mount()</code>
+      {{ " " }}para iniciar tu app. Sin router, pasa el componente directamente:
+    </p>
+    <CodeBlock title="src/main.ts" language="typescript" :code="mountApp" />
+
+    <p>Con router:</p>
+    <CodeBlock
+      title="src/main.ts"
+      language="typescript"
+      :code="mountAppWithRouter" />
+
+    <h2 id="estructura">Estructura recomendada de proyecto</h2>
+    <CodeBlock language="bash" :code="projectStructure" />
+    <p>
+      La convención es separar componentes reutilizables en
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">components/</code>
+      {{ " " }}y las vistas principales en
+      <!-- prettier-ignore -->
+      <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">pages/</code>
+      .
+    </p>
+  </DocsLayout>
+</template>
