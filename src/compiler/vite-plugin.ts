@@ -4,12 +4,18 @@ import { parse } from "./parser.js";
 import { generateCodeNodes } from "./codegen.js";
 
 function extractImports(script: string): { imports: string; code: string } {
-  const lines = script.split("\n");
-  const importLines = lines.filter((l) => l.trim().startsWith("import"));
-  const codeLines = lines.filter((l) => !l.trim().startsWith("import"));
+  const importRegex = /^\s*import\s+([\s\S]*?from\s+)?['"][^'"]+['"]\s*;?/gm;
+  const imports: string[] = [];
+  const code = script
+    .replace(importRegex, (match) => {
+      imports.push(match);
+      return "";
+    })
+    .trim();
+
   return {
-    imports: importLines.join("\n"),
-    code: codeLines.join("\n"),
+    imports: imports.join("\n"),
+    code,
   };
 }
 
