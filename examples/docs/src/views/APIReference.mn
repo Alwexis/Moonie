@@ -1,0 +1,165 @@
+<script>
+  import DocsLayout from "../components/ui/DocsLayout.mn";
+</script>
+
+<template>
+  <DocsLayout>
+    <h1 className="text-3xl font-bold text-foreground mb-2">API Reference</h1>
+    <p className="text-muted-foreground mb-8">Referencia completa de todas las funciones exportadas por Moonie. Todo se importa desde <code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">moonie</code>{{` y `}}<code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-sm">moonie/router</code>.</p>
+
+    <h2 id="reactivity">Reactividad</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Función</th>
+          <th>Firma</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">value</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{`value<T>(initial: T): T`}}</code></td>
+          <td>Contenedor reactivo primitivo con <code className="text-xs font-mono">.get()</code>{{" y "}}<code className="text-xs font-mono">.set()</code></td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">reactive</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{`reactive<T>(obj: T | null): T & { set: (newValue: Partial<T>) => void } `}}</code></td>
+          <td>Proxy reactivo para objetos. Soporta <code className="text-xs font-mono">.set(newObj)</code>{{" "}}para reemplazar completo.</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">computed</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"computed<T>(fn: () => T): Readonly<T>"}}</code></td>
+          <td>Valor derivado lazy, se recalcula solo cuando sus dependencias cambian</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">effect</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"effect(fn: () => void): Effect"}}</code></td>
+          <td>Corre y se re-ejecuta cuando cambian sus dependencias</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">watch</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"watch<T>(source, cb: (newVal, oldVal) => void): Effect"}}</code></td>
+          <td>Como effect pero solo dispara en cambios, recibe valor anterior y nuevo</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="lifecycle">Lifecycle</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Función</th>
+          <th>Firma</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">onMount</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"onMount(fn: () => void | (() => void)): void"}}</code></td>
+          <td>Corre cuando el componente está en el DOM. Si retorna una función, se registra como cleanup en unmount</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">onUnmount</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"onUnmount(fn: () => void): void"}}</code></td>
+          <td>Corre cuando el componente se desmonta</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="runtime">Runtime</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Función</th>
+          <th>Firma</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">mount</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">mount(selector: string, component?: Component): App</code></td>
+          <td>Monta la app. Sin componente retorna objeto con <code className="text-xs font-mono">.router(routes)</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="router">Router</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Función</th>
+          <th>Firma</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">navigate</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">navigate(path: string, opts?): void</code></td>
+          <td>Navegación programática</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">useParams</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"useParams(): Record<string, string>"}}</code></td>
+          <td>Retorna los parámetros de la ruta actual</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">Link</code></td>
+          <td><code className="text-xs font-mono text-muted-foreground">{{"<Link to=\"...\" />"}}</code></td>
+          <td>Componente anchor que usa navigate internamente, con clase activa</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="templates">Sintaxis de Templates</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sintaxis</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{"\{\{ expr \}\}"}}</code></td>
+          <td>Interpolación de expresiones</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{":prop=\"expr\""}}</code></td>
+          <td>Binding reactivo de atributos</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{"@event=\"handler\""}}</code></td>
+          <td>Listener de eventos DOM</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{`:ref="refObj"`}}</code></td>
+          <td>Referencia directa al elemento DOM</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{`@if (cond) { } @else { }`}}</code></td>
+          <td>Renderizado condicional</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{`@for (x of list; key: x.id) { } @empty { }`}}</code></td>
+          <td>Iteración con key y fallback vacío</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{`<slot />`}}</code></td>
+          <td>Slot default</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{`<slot name="x" />`}}</code></td>
+          <td>Slot con nombre</td>
+        </tr>
+        <tr>
+          <td><code className="text-primary bg-secondary px-1.5 py-0.5 rounded text-xs font-mono">{{`<tag slot="x">`}}</code></td>
+          <td>Asignar contenido a un slot con nombre</td>
+        </tr>
+      </tbody>
+    </table>
+  </DocsLayout>
+</template>

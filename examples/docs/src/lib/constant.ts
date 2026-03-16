@@ -44,7 +44,7 @@ export const NAVIGATION_DATA = [
     title: "Templates",
     href: "/docs/templates",
     items: [
-      { title: "Interpolación {{ }}", href: "/docs/templates" },
+      { title: "Interpolación {{ }}", href: "/docs/templates#interpolacion" },
       { title: "Binding de atributos", href: "/docs/templates#binding" },
       { title: "Referencia :ref", href: "/docs/templates#ref" },
       { title: "Eventos @click", href: "/docs/templates#eventos" },
@@ -57,7 +57,7 @@ export const NAVIGATION_DATA = [
     title: "Router",
     href: "/docs/router",
     items: [
-      { title: "Configuración", href: "/docs/router" },
+      { title: "Configuración", href: "/docs/router#configuracion" },
       { title: "Rutas dinámicas", href: "/docs/router#dinamicas" },
       { title: "useParams()", href: "/docs/router#useparams" },
       { title: "navigate()", href: "/docs/router#navigate" },
@@ -68,7 +68,7 @@ export const NAVIGATION_DATA = [
     title: "API Reference",
     href: "/docs/api",
     items: [
-      { title: "Reactividad", href: "/docs/api" },
+      { title: "Reactividad", href: "/docs/api#reactivity" },
       { title: "Lifecycle", href: "/docs/api#lifecycle" },
       { title: "Runtime", href: "/docs/api#runtime" },
       { title: "Router", href: "/docs/api#router" },
