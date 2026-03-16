@@ -15,6 +15,17 @@
     "./vite": {
       "types": "./dist/vite.d.ts",
       "import": "./dist/vite.js"
+    },
+    "./router": {
+      "types": "./dist/router.d.ts",
+      "import": "./dist/router.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "*.mn": [
+        "./dist/mn.d.ts"
+      ]
     }
   },
   "scripts": {
