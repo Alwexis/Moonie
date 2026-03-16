@@ -18,7 +18,7 @@ export declare function RouterView({ routes, fallback, }: {
 }): Comment;
 export declare function useParams(): Record<string, string>;
 /**
- * Wraper de etiqueta anchor (la a) que previene la navegación nativa del elemento y la reemplaza por navigate.
+ * Wrapper de etiqueta anchor que previene la navegación nativa y la reemplaza por navigate.
  */
 export declare function Link({ to, children, ...props }: {
     to: string;

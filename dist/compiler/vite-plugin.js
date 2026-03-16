@@ -3,12 +3,17 @@ import { tokenize } from "./tokenizer.js";
 import { parse } from "./parser.js";
 import { generateCodeNodes } from "./codegen.js";
 function extractImports(script) {
-    const lines = script.split("\n");
-    const importLines = lines.filter((l) => l.trim().startsWith("import"));
-    const codeLines = lines.filter((l) => !l.trim().startsWith("import"));
+    const importRegex = /^\s*import\s+([\s\S]*?from\s+)?['"][^'"]+['"]\s*;?/gm;
+    const imports = [];
+    const code = script
+        .replace(importRegex, (match) => {
+        imports.push(match);
+        return "";
+    })
+        .trim();
     return {
-        imports: importLines.join("\n"),
-        code: codeLines.join("\n"),
+        imports: imports.join("\n"),
+        code,
     };
 }
 export function mooniePlugin() {
