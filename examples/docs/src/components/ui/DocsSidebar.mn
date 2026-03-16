@@ -1,8 +1,31 @@
 <script>
   import { currentPath, currentHash, Link } from "moonie/router";
-  import { onMount } from "moonie";
+  import { onMount, value } from "moonie";
   import clsx from "clsx";
   import { NAVIGATION_DATA } from "../../lib/constant";
+
+const expandedSections = value(new Set());
+
+function toggleSection(title) {
+  const set = new Set(expandedSections.get());
+  if (set.has(title)) {
+    set.delete(title);
+  } else {
+    set.add(title);
+  }
+  expandedSections.set(set);
+}
+
+onMount(() => {
+  const currentSection = NAVIGATION_DATA.find((section) =>
+    currentPath.get().startsWith(section.href)
+  );
+  if (currentSection) {
+    const set = new Set(expandedSections.get());
+    set.add(currentSection.title);
+    expandedSections.set(set);
+  }
+});
 </script>
 
 <template>
@@ -20,11 +43,11 @@
     <nav class="p-4 space-y-1">
       @for (section of NAVIGATION_DATA; key: section.title) {
         <div>
-          <button :class="clsx('flex items-center justify-between w-full px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': currentPath.get() === section.href, 'text-muted-foreground hover:text-foreground': currentPath.get() !== section.href })">
+          <button @click="toggleSection(section.title)" :class="clsx('flex items-center justify-between cursor-pointer w-full px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': currentPath.get() === section.href, 'text-muted-foreground hover:text-foreground': currentPath.get() !== section.href })">
             {{ section.title }}
-            <svg :class="clsx('w-3.5 h-3.5 transition-transform duration-150', { 'rotate-0': currentPath.get() === section.href, '-rotate-90': currentPath.get() !== section.href })" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg :class="clsx('w-3.5 h-3.5 transition-transform duration-150', { 'rotate-0': expandedSections.get().has(section.title), '-rotate-90': !expandedSections.get().has(section.title) })" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </button>
-          @if (currentPath.get().startsWith(section.href)) {
+          @if (expandedSections.get().has(section.title)) {
             <div class="flex flex-col ml-4 border-l border-border space-y-0.5 mb-2">
               @for (item of section.items; key: item) {
                 <Link :to="item.href" :class="clsx('block pl-4 py-1.5 text-sm transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': item.href.endsWith(currentHash.get()) && currentHash.get().trim().length > 0, 'text-muted-foreground hover:text-foreground': !item.href.endsWith(currentHash.get()) })">
