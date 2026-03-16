@@ -10,3 +10,4 @@ export declare let activeEffect: Effect | null;
 export declare function setActiveEffect(effect: any): void;
 export declare function effect(eff: () => void): Effect;
 export declare function run<T>(fn: () => T, eff: Effect): T;
+export declare function untrack<T>(fn: () => T): T;

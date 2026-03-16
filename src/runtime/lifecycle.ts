@@ -68,4 +68,9 @@ export function mount(selector: string, component?: () => HTMLElement) {
 export function unmountInstance(instance: ComponentInstance) {
   instance.children?.forEach(unmountInstance);
   instance.unmountedHooks.forEach((fn) => fn());
+  instance.effects?.forEach((eff) => {
+    eff.deps.forEach((dep: any) => dep.delete(eff));
+    eff.deps.clear();
+  });
+  instance.effects = [];
 }

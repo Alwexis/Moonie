@@ -6,7 +6,9 @@ export function h(tag, props, children) {
     if (typeof tag === "function") {
         const instance = createInstance();
         pushInstance(instance);
-        const node = tag({ children, ...(props ?? {}) });
+        const { children: propsChildren, ...restProps } = props ?? {};
+        const resolvedChildren = children !== undefined ? children : propsChildren;
+        const node = tag({ children: resolvedChildren, ...restProps });
         popInstance();
         if (currentInstance) {
             instance.mountedHooks.forEach((fn) => currentInstance?.mountedHooks.push(fn));

@@ -1,8 +1,11 @@
+import { Effect } from "../reactive/effect.js";
+
 // es la interfaz de ubna instancia de componente. Tiene mountedHooks y unmounted hooks para almacenar efectos que se ejecutan en su lifecycle
 export interface ComponentInstance {
   mountedHooks: Function[];
   unmountedHooks: Function[];
   children: ComponentInstance[];
+  effects: Effect[];
 }
 
 // un stack para manejar instancias de componentes anidados y variable global para instancia actual
@@ -15,6 +18,7 @@ export function createInstance() {
     mountedHooks: [],
     unmountedHooks: [],
     children: [],
+    effects: [],
   };
   if (currentInstance) {
     currentInstance.children?.push(instance);
@@ -32,4 +36,8 @@ export function pushInstance(instance: ComponentInstance) {
 export function popInstance() {
   instanceStack.pop();
   currentInstance = instanceStack[instanceStack.length - 1] || null;
+}
+
+export function getCurrentInstance() {
+  return currentInstance;
 }

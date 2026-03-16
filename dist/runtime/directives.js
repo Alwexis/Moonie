@@ -1,4 +1,4 @@
-import { effect } from "../reactive/effect.js";
+import { effect, untrack } from "../reactive/effect.js";
 import { createInstance, currentInstance, popInstance, pushInstance, } from "./instance.js";
 import { unmountInstance, onMount } from "./lifecycle.js";
 function toArray(result) {
@@ -11,10 +11,10 @@ export function If({ when, then, otherwise, }) {
     function _mountBranch(branch) {
         const instance = createInstance();
         pushInstance(instance);
-        const result = branch();
+        const result = untrack(() => branch());
         popInstance();
         currentChildInstance = instance;
-        instance.mountedHooks.forEach((fn) => fn());
+        untrack(() => instance.mountedHooks.forEach((fn) => fn()));
         currentNodes = toArray(result);
         currentNodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
     }
@@ -45,12 +45,12 @@ export function For({ each, render, key, empty, }) {
         const k = key(item, index);
         const instance = createInstance();
         pushInstance(instance);
-        const result = render(item);
+        const result = untrack(() => render(item));
         popInstance();
         const nodes = toArray(result);
         nodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
         _renderized.set(k, { nodes, instance });
-        instance.mountedHooks.forEach((f) => f());
+        untrack(() => instance.mountedHooks.forEach((f) => f()));
     }
     effect(() => {
         const list = typeof each === "function" ? each() : each;
@@ -59,7 +59,7 @@ export function For({ each, render, key, empty, }) {
         if (list.length === 0 && empty) {
             const instance = createInstance();
             pushInstance(instance);
-            const result = empty();
+            const result = untrack(() => empty());
             popInstance();
             emptyInstance = instance;
             emptyNodes = toArray(result);
@@ -68,7 +68,7 @@ export function For({ each, render, key, empty, }) {
                 instance.mountedHooks.forEach((fn) => currentInstance?.mountedHooks.push(fn));
             }
             else {
-                instance.mountedHooks.forEach((fn) => fn());
+                untrack(() => instance.mountedHooks.forEach((fn) => fn()));
             }
         }
         else {

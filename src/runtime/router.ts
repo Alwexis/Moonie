@@ -1,4 +1,4 @@
-import { effect } from "../reactive/effect.js";
+import { effect, untrack } from "../reactive/effect.js";
 import { value } from "../reactive/value.js";
 import { h } from "./h.js";
 import {
@@ -16,7 +16,7 @@ export const currentPath = value(
 
 // guardamos valor reactivo de current hash
 export const currentHash = value(
-  typeof window !== "undefined" ? window.location.hash.slice(1) : ""
+  typeof window !== "undefined" ? window.location.hash.slice(1) : "",
 );
 
 // parámetros
@@ -73,16 +73,18 @@ export function RouterView({
   const anchor = document.createComment("moonie-router-anchor");
   let currentElement: HTMLElement | undefined;
   let currentChildInstance: ComponentInstance | undefined;
+  let _mounted = false;
 
   function _mount(component: () => HTMLElement) {
     const instance = createInstance();
     pushInstance(instance);
-    currentElement = component();
+    currentElement = untrack(() => component());
     popInstance();
     currentChildInstance = instance;
     if (anchor.parentNode) {
       anchor.parentNode.insertBefore(currentElement, anchor);
-      instance.mountedHooks.forEach((fn) => fn());
+      untrack(() => instance.mountedHooks.forEach((fn) => fn())); // también untrack
+      _mounted = true;
     }
   }
 
@@ -91,7 +93,6 @@ export function RouterView({
   }
 
   effect(() => {
-    // desmontar vista anterior
     if (currentElement) {
       currentElement.remove();
       currentElement = undefined;
@@ -101,7 +102,6 @@ export function RouterView({
       currentChildInstance = undefined;
     }
 
-    // limpiamos el hash antes de hacer match
     const cleanPath = currentPath.get().split("#")[0];
 
     let matchedParams: Record<string, string> = {};
@@ -124,10 +124,11 @@ export function RouterView({
   });
 
   onMount(() => {
-    if (currentElement) {
+    if (currentElement && !_mounted) {
       anchor.parentNode?.insertBefore(currentElement, anchor);
-      currentChildInstance?.mountedHooks.forEach((fn) => fn());
+      untrack(() => currentChildInstance?.mountedHooks.forEach((fn) => fn()));
     }
+    _mounted = false;
   });
 
   return anchor;

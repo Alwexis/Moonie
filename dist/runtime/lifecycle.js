@@ -57,4 +57,9 @@ export function mount(selector, component) {
 export function unmountInstance(instance) {
     instance.children?.forEach(unmountInstance);
     instance.unmountedHooks.forEach((fn) => fn());
+    instance.effects?.forEach((eff) => {
+        eff.deps.forEach((dep) => dep.delete(eff));
+        eff.deps.clear();
+    });
+    instance.effects = [];
 }
