@@ -1,0 +1,100 @@
+<script>
+import { onMount, ref } from "moonie";
+import { Link } from "moonie/router"
+import hljs from 'highlight.js/lib/core'
+import xml from 'highlight.js/lib/languages/xml'
+import typescript from 'highlight.js/lib/languages/typescript'
+import 'highlight.js/styles/github-dark.css'
+import { basicExample } from '../examples/basic'
+import Header from "../components/home/Header.mn"
+import Card from "../components/home/Card.mn"
+
+hljs.registerLanguage('xml', xml)
+hljs.registerLanguage('typescript', typescript)
+
+const codeBlock = ref()
+
+onMount(() => {
+  if (codeBlock.el) {
+    codeBlock.el.textContent = basicExample
+    hljs.highlightElement(codeBlock.el)
+  }
+})
+</script>
+
+<template>
+  <div class="min-h-screen bg-background">
+    <!-- Header -->
+    <Header />
+
+    <!-- Hero -->
+    <section class="pt-32 pb-20 px-6 relative overflow-hidden">
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-125 rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+      
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-16 animate-fade-in">
+          <div class="inline-block mb-6 relative">
+            <div class="absolute inset-0 glow-primary rounded-full scale-150" />
+            <img src="/moonie-framework.webp" alt="Moonie" class="w-20 h-20 relative" />
+          </div>
+          <h1 class="text-5xl md:text-6xl font-bold text-foreground mb-4 tracking-tight">
+            Moonie
+          </h1>
+          <p class="text-xl text-muted-foreground max-w-lg mx-auto mb-8">
+            Un micro-framework reactivo, compilado y ultra-ligero para construir interfaces modernas.
+          </p>
+          <div class="flex items-center justify-center gap-4">
+            <Link
+              to="/docs/getting-started"
+              class="inline-flex items-center px-6 py-2.5 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity duration-150"
+            >
+              Get started
+            </Link>
+            <a
+              href="https://github.com/alwexis/moonie"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center px-6 py-2.5 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-secondary transition-colors duration-150"
+            >
+              Ver en GitHub
+            </a>
+          </div>
+        </div>
+
+        <div class="max-w-xl mx-auto animate-fade-in">
+          <pre class="p-5 rounded-xl border border-border text-sm leading-relaxed overflow-x-auto">
+            <code :ref="codeBlock" class="language-xml"></code>
+          </pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-20 px-6 border-t border-border">
+      <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6">
+        <Card titulo="Sin Virtual DOM">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mb-4" stroke-width="1.5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          <p slot="descripcion" class="text-muted-foreground text-sm text-center leading-relaxed">
+            Compila archivos .mn a JavaScript puro en build time. Sin diffing, sin runtime overhead.
+          </p>
+        </Card>
+
+        <Card titulo="Reactividad Granular">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mb-4" stroke-width="1.5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><path d="M20.2 20.2c2.04-2.03.02-7.36-4.5-11.9-4.54-4.52-9.87-6.54-11.9-4.5-2.04 2.03-.02 7.36 4.5 11.9 4.54 4.52 9.87 6.54 11.9 4.5Z"/><path d="M15.7 15.7c4.52-4.54 6.54-9.87 4.5-11.9-2.03-2.04-7.36-.02-11.9 4.5-4.52 4.54-6.54 9.87-4.5 11.9 2.03 2.04 7.36.02 11.9-4.5Z"/></svg>
+          <p slot="descripcion" class="text-muted-foreground text-sm text-center leading-relaxed">Sistema de señales y proxies fine-grained que actualiza solo lo que cambia. Cero re-renders innecesarios.</p>
+        </Card>
+        
+        <Card titulo="~3-4kb gzipped">
+          <svg slot="icon" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary mb-4" stroke-width="1.5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></svg>
+          <p slot="descripcion" class="text-muted-foreground text-sm text-center leading-relaxed">Runtime ultra-ligero. Tu bundle se mantiene pequeño sin importar la escala.</p>
+        </Card>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="flex flex-col items-center justify-center gap-y-2 py-8 px-6 border-t border-border text-center text-xs text-muted-foreground">
+      <span>Moonie Framework — MIT License</span>
+      <span>Developed by <a href="https://github.com/alwexis" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">{{ `@alwexis` }}</a></span>
+      <span>As a love letter for Moonie and Web Development</span>
+    </footer>
+  </div>
+</template>

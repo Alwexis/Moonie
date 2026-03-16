@@ -1,0 +1,40 @@
+<script>
+  import { currentPath, currentHash, Link } from "moonie/router";
+  import { onMount } from "moonie";
+  import clsx from "clsx";
+  import { NAVIGATION_DATA } from "../../lib/constant";
+</script>
+
+<template>
+  <aside class="w-64 shrink-0 border-r border-border bg-card fixed top-0 left-0 h-screen overflow-y-auto z-30">
+    <div class="p-5 border-b border-border">
+      <Link to="/" class="flex items-center gap-2.5">
+        <img src="/moonie-framework.webp" alt="Moonie" class="w-7 h-7" />
+        <span class="text-foreground font-semibold text-lg">Moonie</span>
+        <span class="text-xs text-muted-foreground bg-secondary px-1.5 py-0.5 rounded font-mono">
+          v0.1
+        </span>
+      </Link>
+    </div>
+
+    <nav class="p-4 space-y-1">
+      @for (section of NAVIGATION_DATA; key: section.title) {
+        <div>
+          <button :class="clsx('flex items-center justify-between w-full px-2 py-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': currentPath.get() === section.href, 'text-muted-foreground hover:text-foreground': currentPath.get() !== section.href })">
+            {{ section.title }}
+            <svg :class="clsx('w-3.5 h-3.5 transition-transform duration-150', { 'rotate-0': currentPath.get() === section.href, '-rotate-90': currentPath.get() !== section.href })" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          @if (currentPath.get().startsWith(section.href)) {
+            <div class="flex flex-col ml-4 border-l border-border space-y-0.5 mb-2">
+              @for (item of section.items; key: item) {
+                <Link :to="item.href" :class="clsx('block pl-4 py-1.5 text-sm transition-colors duration-150', { 'text-primary border-l-2 border-primary -ml-px font-medium': item.href.endsWith(currentHash.get()) && currentHash.get().trim().length > 0, 'text-muted-foreground hover:text-foreground': !item.href.endsWith(currentHash.get()) })">
+                  {{ item.title }}
+                </Link>
+              }
+            </div>
+          }
+        </div>
+      }
+    </nav>
+  </aside>
+</template>
