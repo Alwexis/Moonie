@@ -55,9 +55,25 @@ export function parse(tokens) {
                 consume();
             return { type: "Element", tag, props, children: [] };
         }
+        // if (!peek() || peek()!.type !== "OpenTagEnd") {
+        //   throw new Error(
+        //     `[Moonie] Se esperaba ">" para cerrar el tag de apertura <${tag}>.`,
+        //   );
+        // }
         consume(); // OpenTagEnd
         const children = parseChildren();
-        consume(); // CloseTag
+        // if (!peek() || peek()!.type !== "CloseTag") {
+        //   throw new Error(
+        //     `[Moonie] Tag <${tag}> no fue cerrado. ¿Se te olvidó "</${tag}>"?`,
+        //   );
+        // }
+        const closeTag = consume(); // CloseTag
+        // const closeTagName = (closeTag.value as string).slice(2, -1);
+        // if (closeTagName !== tag) {
+        //   throw new Error(
+        //     `[Moonie] Tag de cierre incorrecto: se encontró "</${closeTagName}>", pero se esperaba "</${tag}>".`,
+        //   );
+        // }
         return { type: "Element", tag, props, children };
     }
     function parseChildren() {

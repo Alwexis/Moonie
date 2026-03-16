@@ -1,4 +1,4 @@
-import { effect } from "../reactive/effect.js";
+import { effect, untrack } from "../reactive/effect.js";
 import { value } from "../reactive/value.js";
 import { h } from "./h.js";
 import { createInstance, popInstance, pushInstance, } from "./instance.js";
@@ -44,22 +44,23 @@ export function RouterView({ routes, fallback, }) {
     const anchor = document.createComment("moonie-router-anchor");
     let currentElement;
     let currentChildInstance;
+    let _mounted = false;
     function _mount(component) {
         const instance = createInstance();
         pushInstance(instance);
-        currentElement = component();
+        currentElement = untrack(() => component());
         popInstance();
         currentChildInstance = instance;
         if (anchor.parentNode) {
             anchor.parentNode.insertBefore(currentElement, anchor);
-            instance.mountedHooks.forEach((fn) => fn());
+            untrack(() => instance.mountedHooks.forEach((fn) => fn())); // también untrack
+            _mounted = true;
         }
     }
     function _mountRoute(route) {
         _mount(route.component);
     }
     effect(() => {
-        // desmontar vista anterior
         if (currentElement) {
             currentElement.remove();
             currentElement = undefined;
@@ -68,7 +69,6 @@ export function RouterView({ routes, fallback, }) {
             unmountInstance(currentChildInstance);
             currentChildInstance = undefined;
         }
-        // limpiamos el hash antes de hacer match
         const cleanPath = currentPath.get().split("#")[0];
         let matchedParams = {};
         const route = routes.find((r) => {
@@ -89,10 +89,11 @@ export function RouterView({ routes, fallback, }) {
         }
     });
     onMount(() => {
-        if (currentElement) {
+        if (currentElement && !_mounted) {
             anchor.parentNode?.insertBefore(currentElement, anchor);
-            currentChildInstance?.mountedHooks.forEach((fn) => fn());
+            untrack(() => currentChildInstance?.mountedHooks.forEach((fn) => fn()));
         }
+        _mounted = false;
     });
     return anchor;
 }

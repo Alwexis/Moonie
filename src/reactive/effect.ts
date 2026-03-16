@@ -1,3 +1,5 @@
+import { getCurrentInstance } from "../runtime/instance.js";
+
 /**
  * Effect contiene "fn" (funcion) que es la que se usa como callback cuando se instancia (el effect)
  * tambien tiene "deps" que es un Set de dependencias. Las que él depende de.
@@ -24,7 +26,12 @@ export function effect(eff: () => void): Effect {
   };
 
   self.fn(); // acá llamamos por primera vez fn
-  return self; // retornamos
+  const instance = getCurrentInstance();
+  if (instance) {
+    instance.effects.push(self);
+  }
+
+  return self;
 }
 
 export function run<T>(fn: () => T, eff: Effect): T {
@@ -32,5 +39,14 @@ export function run<T>(fn: () => T, eff: Effect): T {
   setActiveEffect(eff);
   const result = fn();
   setActiveEffect(previous); // ← restaura el efecto anterior
+  return result;
+}
+
+// untrack
+export function untrack<T>(fn: () => T): T {
+  const previous = activeEffect;
+  activeEffect = null;
+  const result = fn();
+  activeEffect = previous;
   return result;
 }

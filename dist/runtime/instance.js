@@ -7,6 +7,7 @@ export function createInstance() {
         mountedHooks: [],
         unmountedHooks: [],
         children: [],
+        effects: [],
     };
     if (currentInstance) {
         currentInstance.children?.push(instance);
@@ -22,4 +23,7 @@ export function pushInstance(instance) {
 export function popInstance() {
     instanceStack.pop();
     currentInstance = instanceStack[instanceStack.length - 1] || null;
+}
+export function getCurrentInstance() {
+    return currentInstance;
 }

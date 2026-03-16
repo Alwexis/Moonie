@@ -1,4 +1,4 @@
-import { effect } from "../reactive/effect.js";
+import { effect, untrack } from "../reactive/effect.js";
 import {
   createInstance,
   currentInstance,
@@ -30,10 +30,10 @@ export function If({
   function _mountBranch(branch: () => MaybeArray) {
     const instance = createInstance();
     pushInstance(instance);
-    const result = branch();
+    const result = untrack(() => branch());
     popInstance();
     currentChildInstance = instance;
-    instance.mountedHooks.forEach((fn) => fn());
+    untrack(() => instance.mountedHooks.forEach((fn) => fn()));
     currentNodes = toArray(result);
     currentNodes.forEach((node) =>
       anchor.parentNode?.insertBefore(node, anchor),
@@ -85,12 +85,12 @@ export function For<T>({
     const k = key(item, index);
     const instance = createInstance();
     pushInstance(instance);
-    const result = render(item);
+    const result = untrack(() => render(item));
     popInstance();
     const nodes = toArray(result);
     nodes.forEach((node) => anchor.parentNode?.insertBefore(node, anchor));
     _renderized.set(k, { nodes, instance });
-    instance.mountedHooks.forEach((f) => f());
+    untrack(() => instance.mountedHooks.forEach((f) => f()));
   }
 
   effect(() => {
@@ -101,7 +101,7 @@ export function For<T>({
     if (list.length === 0 && empty) {
       const instance = createInstance();
       pushInstance(instance);
-      const result = empty();
+      const result = untrack(() => empty!());
       popInstance();
       emptyInstance = instance;
       emptyNodes = toArray(result);
@@ -113,7 +113,7 @@ export function For<T>({
           currentInstance?.mountedHooks.push(fn),
         );
       } else {
-        instance.mountedHooks.forEach((fn) => fn());
+        untrack(() => instance.mountedHooks.forEach((fn) => fn()));
       }
     } else {
       if (emptyInstance) {

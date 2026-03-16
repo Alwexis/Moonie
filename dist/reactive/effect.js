@@ -1,3 +1,4 @@
+import { getCurrentInstance } from "../runtime/instance.js";
 // activeEffect es importante para la reactividad. Lo necesitamos para ejecutar y eliminar dependencias.
 export let activeEffect = null;
 // necesario para exponerlo a modfiicaciones desde fuera del archivo
@@ -16,12 +17,24 @@ export function effect(eff) {
         deps,
     };
     self.fn(); // acá llamamos por primera vez fn
-    return self; // retornamos
+    const instance = getCurrentInstance();
+    if (instance) {
+        instance.effects.push(self);
+    }
+    return self;
 }
 export function run(fn, eff) {
     const previous = activeEffect;
     setActiveEffect(eff);
     const result = fn();
     setActiveEffect(previous); // ← restaura el efecto anterior
+    return result;
+}
+// untrack
+export function untrack(fn) {
+    const previous = activeEffect;
+    activeEffect = null;
+    const result = fn();
+    activeEffect = previous;
     return result;
 }
