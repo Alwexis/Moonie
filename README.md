@@ -1,6 +1,7 @@
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/546d96ca-32c3-4f12-a92a-3ceda3babd53">
+  <img width="500" height="500" alt="moonie" src="https://github.com/user-attachments/assets/8a4b66d7-7d39-4dfc-a69f-8b2b75dc90b4" />
 </div>
+
 
 # Moonie 🌙
 
