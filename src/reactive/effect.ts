@@ -38,7 +38,7 @@ export function run<T>(fn: () => T, eff: Effect): T {
   const previous = activeEffect;
   setActiveEffect(eff);
   const result = fn();
-  setActiveEffect(previous); // ← restaura el efecto anterior
+  setActiveEffect(previous);
   return result;
 }
 

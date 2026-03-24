@@ -125,7 +125,6 @@ export function parse(tokens: Token[]): ASTNode[] {
         let children: ASTNode[] = [];
         if (peek()?.type === "Block") {
           const blockToken = consume();
-          // ← cambio clave: parseChildren en vez de parse
           const innerTokens = blockToken.value as Token[];
           const savedPos = pos;
           pos = 0;
@@ -154,6 +153,5 @@ export function parse(tokens: Token[]): ASTNode[] {
     return nodes;
   }
 
-  // ← cambio clave: usar parseChildren en vez del loop manual
   return parseChildren();
 }

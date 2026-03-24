@@ -28,7 +28,7 @@ export function generate(node, context = {}) {
                 }
             }
         }
-        const childs = children ? generateNodes(children, context) : []; // ← bien
+        const childs = children ? generateNodes(children, context) : [];
         return h(tagOrComponent, finalProps, childs);
     }
     console.warn("nodo sin manejar:", node);
@@ -58,7 +58,7 @@ export function generateNodes(nodes, context = {}) {
             const next = nodes[i + 1];
             const hasEmpty = next?.type === "Directive" && next?.directive === "empty";
             result.push(h(For, {
-                each: () => evaluate(array, context), // ← cambia esta línea
+                each: () => evaluate(array, context),
                 key: (item) => evaluate(key, { ...context, [variable]: item }),
                 render: (item) => generateNodes(node.children, { ...context, [variable]: item })[0],
                 empty: hasEmpty
