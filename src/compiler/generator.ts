@@ -34,7 +34,7 @@ export function generate(
         }
       }
     }
-    const childs = children ? generateNodes(children, context) : []; // ← bien
+    const childs = children ? generateNodes(children, context) : [];
     return h(tagOrComponent, finalProps, childs as any);
   }
   console.warn("nodo sin manejar:", node);
@@ -74,7 +74,7 @@ export function generateNodes(
 
       result.push(
         h(For, {
-          each: () => evaluate(array, context), // ← cambia esta línea
+          each: () => evaluate(array, context),
           key: (item: any) => evaluate(key, { ...context, [variable]: item }),
           render: (item: any) =>
             generateNodes(node.children!, { ...context, [variable!]: item })[0],

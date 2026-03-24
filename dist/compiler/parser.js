@@ -98,7 +98,6 @@ export function parse(tokens) {
                 let children = [];
                 if (peek()?.type === "Block") {
                     const blockToken = consume();
-                    // ← cambio clave: parseChildren en vez de parse
                     const innerTokens = blockToken.value;
                     const savedPos = pos;
                     pos = 0;
@@ -126,6 +125,5 @@ export function parse(tokens) {
         }
         return nodes;
     }
-    // ← cambio clave: usar parseChildren en vez del loop manual
     return parseChildren();
 }

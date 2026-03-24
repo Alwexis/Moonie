@@ -1,4 +1,4 @@
-/// <reference path="./mn.d.ts" />
+import "./mn.js";
 export * from "./reactive/computed.js";
 export * from "./reactive/effect.js";
 export * from "./reactive/reactive.js";

@@ -10,9 +10,23 @@ export function effect(eff) {
     const self = {
         // aqui creamos una instancia de effect que encapsula eff en fn y hace todo lo que dije arriba.
         fn: () => {
-            deps.forEach((d) => d.delete(self));
-            deps.clear();
-            run(eff, self);
+            // evitamos reentradas síncronas que pueden provocar recursión infinita
+            if (self._running) {
+                self._pending = true;
+                return;
+            }
+            self._running = true;
+            try {
+                do {
+                    self._pending = false;
+                    deps.forEach((d) => d.delete(self));
+                    deps.clear();
+                    run(eff, self);
+                } while (self._pending);
+            }
+            finally {
+                self._running = false;
+            }
         },
         deps,
     };
@@ -27,7 +41,7 @@ export function run(fn, eff) {
     const previous = activeEffect;
     setActiveEffect(eff);
     const result = fn();
-    setActiveEffect(previous); // ← restaura el efecto anterior
+    setActiveEffect(previous);
     return result;
 }
 // untrack

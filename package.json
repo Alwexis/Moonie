@@ -21,13 +21,6 @@
       "import": "./dist/router.js"
     }
   },
-  "typesVersions": {
-    "*": {
-      "*.mn": [
-        "./dist/mn.d.ts"
-      ]
-    }
-  },
   "scripts": {
     "build": "tsc"
   },

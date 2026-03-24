@@ -5,6 +5,8 @@
 export type Effect = {
     fn: Function;
     deps: any;
+    _running?: boolean;
+    _pending?: boolean;
 };
 export declare let activeEffect: Effect | null;
 export declare function setActiveEffect(effect: any): void;
